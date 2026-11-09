@@ -1,7 +1,7 @@
 # Hoteli
 
 > Versioni 1, para rishikimit të AI-së.
-> Grupi: Anëtari 1, Anëtari 2, Anëtari 3, Anëtari 4 · Repository: `ueb-hotel`
+> Grupi: Uvejs Gjelaj (lider), Xhemaledin Beluli, Muzlind Matoshi, Dion Kastrati · Repository: `ueb-hotel`
 
 ## 1. Përshkrimi
 
@@ -94,10 +94,10 @@ E thërret `reservations/form.html` me `fetch` sapo përdoruesi i zgjedh datat:
 
 | Kush | Çka |
 |---|---|
-| Anëtari 1 | projekti, `compose`/Docker për PostgreSQL, `Room` + `Reservation` + relacioni |
-| Anëtari 2 | `layout.html`, `fragments.html`, faqja 404, CSS |
-| Anëtari 3 | CRUD i rezervimeve: controller, lista, forma, validimi |
-| Anëtari 4 | CRUD i dhomave; login-i me përdorues in-memory, logout |
+| Uvejs Gjelaj (lider) | projekti, `compose`/Docker për PostgreSQL, `Room` + `Reservation` + relacioni |
+| Xhemaledin Beluli | `layout.html`, `fragments.html`, faqja 404, CSS |
+| Muzlind Matoshi | CRUD i rezervimeve: controller, lista, forma, validimi |
+| Dion Kastrati | CRUD i dhomave; login-i me përdorues in-memory, logout |
 
 Të gjithë: secili e rishikon PR-in e një tjetri para merge.
 
