@@ -9,6 +9,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
+import org.springframework.http.HttpStatus;
 
 @Configuration
 public class SecurityConfig {
@@ -17,9 +20,9 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/access-denied", "/error", "/css/**").permitAll()
+                .requestMatchers("/login", "/access-denied", "/error", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/app/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/app/**", "/api/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated())
             .formLogin(form -> form
                 .loginPage("/login")
@@ -28,7 +31,12 @@ public class SecurityConfig {
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll())
-            .exceptionHandling(ex -> ex.accessDeniedPage("/access-denied"));
+            .exceptionHandling(ex -> ex
+                .accessDeniedPage("/access-denied")
+                // për /api/** kthe 401 në vend të ridrejtimit te faqja e login-it
+                .defaultAuthenticationEntryPointFor(
+                    new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                    PathPatternRequestMatcher.pathPattern("/api/**")));
         return http.build();
     }
 

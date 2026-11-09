@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Maven wrapper: shell script must keep LF, Windows script CRLF
+mvnw text eol=lf
+*.cmd text eol=crlf

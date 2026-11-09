@@ -81,6 +81,15 @@ public class RoomController {
         return "redirect:/admin/rooms";
     }
 
+    /** Faqja e konfirmimit: rooms/form.html në modalitetin "fshi" (vetëm lexim). */
+    @GetMapping("/admin/rooms/{id}/delete")
+    public String confirmDelete(@PathVariable Long id, Model model) {
+        showForm(model, RoomForm.from(find(id)), id);
+        model.addAttribute("deleteMode", true);
+        model.addAttribute("hasReservations", reservations.existsByRoomId(id));
+        return "rooms/form";
+    }
+
     @PostMapping("/admin/rooms/{id}/delete")
     public String delete(@PathVariable Long id, RedirectAttributes redirect) {
         Room room = find(id);

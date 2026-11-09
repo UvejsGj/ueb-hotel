@@ -61,7 +61,8 @@ Një dhomë që ka rezervime nuk fshihet: ADMIN-i merr mesazhin “Dhoma ka reze
 | `/app/reservations/{id}/edit` | GET, POST | reservations/form.html | USER, ADMIN |
 | `/admin/reservations/{id}/delete` | POST | fshin, kthen te lista | ADMIN |
 | `/admin/rooms` | GET | rooms/list.html | ADMIN |
-| `/admin/rooms/new`, `/{id}/edit`, `/{id}/delete` | GET, POST | rooms/form.html | ADMIN |
+| `/admin/rooms/new`, `/{id}/edit`, `/{id}/delete` | GET, POST | rooms/form.html (te `delete`: faqja e konfirmimit) | ADMIN |
+| `/api/rooms/available` | GET | JSON, shih pikën 7 | USER, ADMIN |
 | `/app/rooms/{id}` | GET | rooms/detail.html (dhoma + rezervimet) | USER, ADMIN |
 | `/access-denied` | GET | access-denied.html | të gjithë |
 
@@ -84,8 +85,11 @@ Mesazhet:
 `GET /api/rooms/available?from=2026-12-01&to=2026-12-05` → JSON me dhomat e lira në ato data:
 
 ```json
-[{"id": 4, "number": "104", "type": "DOUBLE", "capacity": 2, "pricePerNight": 45.00}]
+[{"id": 4, "number": "104", "type": "DOUBLE", "typeLabel": "Dyshe", "capacity": 2, "pricePerNight": 45.00}]
 ```
+
+- `exclude` (opsional): id-ja e rezervimit që po ndryshohet, që dhoma e tij të mos dalë e zënë nga vetë ai.
+- `to` duhet të jetë pas `from`, përndryshe `400`. Pa login: `401`.
 
 E thërret `reservations/form.html` me `fetch` sapo përdoruesi i zgjedh datat:
 `<select>`-i i dhomave mbushet vetëm me dhomat e lira, dhe forma tregon çmimin total (net × çmimi).

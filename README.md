@@ -1,7 +1,7 @@
 # ueb-hotel
 
 Aplikacion për recepsionin e një hoteli të vogël: dhomat dhe rezervimet e mysafirëve.
-Specifikimi i plotë është te [SPEC.md](SPEC.md). Ky është **faza 1**.
+Specifikimi i plotë është te [SPEC.md](SPEC.md). Të dyja fazat janë të implementuara.
 
 ## Teknologjitë
 
@@ -35,13 +35,26 @@ src/main/java/com/ueb/hotel/
   repository/  RoomRepository, ReservationRepository
   web/         ReservationController, RoomController, HomeController
   web/form/    ReservationForm, RoomForm (validimi)
+  web/api/     RoomApiController (REST)
+  validation/  ValidStay, ValidStayValidator
 src/main/resources/templates/
   layout.html, fragments.html, login.html, access-denied.html, error/404.html
   reservations/  list.html, form.html
   rooms/         list.html, form.html, detail.html
 ```
 
-## Faza 2 (ende jo)
+## Faza 2
 
-- `@ValidStay` te `ReservationForm` (datat, mbivendosja, kapaciteti)
-- `GET /api/rooms/available` + `fetch` në formën e rezervimit
+- `@ValidStay` (`validation/`) te `ReservationForm`: largimi pas ardhjes, pa mbivendosje me rezervime të tjera
+  të së njëjtës dhomë, mysafirët brenda kapacitetit.
+- `GET /api/rooms/available?from=&to=[&exclude=]` (`web/api/RoomApiController`): dhomat e lira si JSON.
+- `static/js/reservation-form.js`: kur zgjidhen datat, forma ngarkon vetëm dhomat e lira dhe tregon totalin.
+- Fshirja e dhomës kalon nga faqja e konfirmimit `GET /admin/rooms/{id}/delete`.
+
+## Testet
+
+```bash
+./mvnw test
+```
+
+`ValidStayValidatorTest` e teston validatorin me Hibernate Validator dhe repository të simuluara (pa databazë).

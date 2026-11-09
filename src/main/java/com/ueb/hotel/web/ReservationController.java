@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -22,10 +24,19 @@ public class ReservationController {
 
     private final ReservationRepository reservations;
     private final RoomRepository rooms;
+    private final LocalValidatorFactoryBean validator;
 
-    public ReservationController(ReservationRepository reservations, RoomRepository rooms) {
+    public ReservationController(ReservationRepository reservations, RoomRepository rooms,
+                                 LocalValidatorFactoryBean validator) {
         this.reservations = reservations;
         this.rooms = rooms;
+        this.validator = validator;
+    }
+
+    /** Id-ja nuk merret kurrë nga forma (do ta anashkalonte kontrollin e mbivendosjes). */
+    @InitBinder("form")
+    void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("id");
     }
 
     @GetMapping("/app/reservations")
@@ -61,9 +72,11 @@ public class ReservationController {
     }
 
     @PostMapping("/app/reservations/{id}/edit")
-    public String update(@PathVariable Long id, @Valid @ModelAttribute("form") ReservationForm form,
+    public String update(@PathVariable Long id, @ModelAttribute("form") ReservationForm form,
                          BindingResult result, Model model, RedirectAttributes redirect) {
         Reservation r = find(id);
+        form.setId(id);
+        validator.validate(form, result);
         Room room = findRoom(form, result);
         if (result.hasErrors()) {
             return showForm(model, form, id);

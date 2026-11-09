@@ -32,10 +32,7 @@
                 <td th:text="|${#numbers.formatDecimal(room.pricePerNight, 1, 2)} €|">50.00 €</td>
                 <td class="actions">
                     <a class="btn btn-small" th:href="@{/admin/rooms/{id}/edit(id=${room.id})}">Ndrysho</a>
-                    <form th:action="@{/admin/rooms/{id}/delete(id=${room.id})}" method="post" class="inline"
-                          onsubmit="return confirm('Ta fshij këtë dhomë?');">
-                        <button type="submit" class="btn btn-small btn-danger">Fshi</button>
-                    </form>
+                    <a class="btn btn-small btn-danger" th:href="@{/admin/rooms/{id}/delete(id=${room.id})}">Fshi</a>
                 </td>
             </tr>
             </tbody>

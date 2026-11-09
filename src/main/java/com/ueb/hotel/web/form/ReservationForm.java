@@ -1,12 +1,20 @@
 package com.ueb.hotel.web.form;
 
 import com.ueb.hotel.model.Reservation;
+import com.ueb.hotel.validation.ValidStay;
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+@ValidStay
 public class ReservationForm {
+
+    /**
+     * Id-ja e rezervimit që po ndryshohet (null për rezervim të ri).
+     * Nuk lidhet nga kërkesa: e vendos controller-i nga URL-ja.
+     */
+    private Long id;
 
     @NotBlank(message = "Emri i mysafirit është i detyrueshëm.")
     @Size(max = 80, message = "Emri mund të ketë më së shumti 80 shkronja.")
@@ -33,6 +41,7 @@ public class ReservationForm {
 
     public static ReservationForm from(Reservation r) {
         ReservationForm f = new ReservationForm();
+        f.id = r.getId();
         f.guestName = r.getGuestName();
         f.guestPhone = r.getGuestPhone();
         f.checkIn = r.getCheckIn();
@@ -41,6 +50,9 @@ public class ReservationForm {
         f.roomId = r.getRoom().getId();
         return f;
     }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getGuestName() { return guestName; }
     public void setGuestName(String guestName) { this.guestName = guestName; }

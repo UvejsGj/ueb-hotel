@@ -5,47 +5,58 @@
     <title>Dhoma · Hoteli</title>
 </head>
 <body>
-<section class="card narrow">
-    <h1 th:text="${roomId == null} ? 'Dhomë e re' : 'Ndrysho dhomën'">Dhomë e re</h1>
+<section class="card narrow" th:with="del=${deleteMode != null and deleteMode}">
+    <h1 th:text="${del} ? 'Fshi dhomën' : (${roomId == null} ? 'Dhomë e re' : 'Ndrysho dhomën')">Dhomë e re</h1>
+
+    <th:block th:if="${del}">
+        <p class="alert alert-error" th:if="${hasReservations}">Dhoma ka rezervime dhe nuk mund të fshihet.</p>
+        <p th:unless="${hasReservations}">A jeni të sigurt që doni ta fshini këtë dhomë? Ky veprim nuk kthehet.</p>
+    </th:block>
 
     <form th:object="${form}" method="post" class="form" novalidate
-          th:action="${roomId == null} ? @{/admin/rooms/new} : @{/admin/rooms/{id}/edit(id=${roomId})}">
+          th:action="${del} ? @{/admin/rooms/{id}/delete(id=${roomId})}
+                            : (${roomId == null} ? @{/admin/rooms/new} : @{/admin/rooms/{id}/edit(id=${roomId})})">
 
-        <div class="row">
-            <div>
-                <label for="number">Numri</label>
-                <input id="number" type="text" th:field="*{number}" maxlength="10"
-                       th:classappend="${#fields.hasErrors('number')} ? 'invalid'">
-                <p class="field-error" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></p>
+        <fieldset th:disabled="${del}" class="plain">
+            <div class="row">
+                <div>
+                    <label for="number">Numri</label>
+                    <input id="number" type="text" th:field="*{number}" maxlength="10"
+                           th:classappend="${#fields.hasErrors('number')} ? 'invalid'">
+                    <p class="field-error" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></p>
+                </div>
+                <div>
+                    <label for="type">Tipi</label>
+                    <select id="type" th:field="*{type}"
+                            th:classappend="${#fields.hasErrors('type')} ? 'invalid'">
+                        <option value="">— zgjidhni —</option>
+                        <option th:each="t : ${roomTypes}" th:value="${t}" th:text="${t.label}">Dyshe</option>
+                    </select>
+                    <p class="field-error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
+                </div>
             </div>
-            <div>
-                <label for="type">Tipi</label>
-                <select id="type" th:field="*{type}"
-                        th:classappend="${#fields.hasErrors('type')} ? 'invalid'">
-                    <option value="">— zgjidhni —</option>
-                    <option th:each="t : ${roomTypes}" th:value="${t}" th:text="${t.label}">Dyshe</option>
-                </select>
-                <p class="field-error" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></p>
-            </div>
-        </div>
 
-        <div class="row">
-            <div>
-                <label for="capacity">Kapaciteti (persona)</label>
-                <input id="capacity" type="number" min="1" max="6" th:field="*{capacity}"
-                       th:classappend="${#fields.hasErrors('capacity')} ? 'invalid'">
-                <p class="field-error" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></p>
+            <div class="row">
+                <div>
+                    <label for="capacity">Kapaciteti (persona)</label>
+                    <input id="capacity" type="number" min="1" max="6" th:field="*{capacity}"
+                           th:classappend="${#fields.hasErrors('capacity')} ? 'invalid'">
+                    <p class="field-error" th:if="${#fields.hasErrors('capacity')}" th:errors="*{capacity}"></p>
+                </div>
+                <div>
+                    <label for="pricePerNight">Çmimi për natë (€)</label>
+                    <input id="pricePerNight" type="number" min="1" step="0.01" th:field="*{pricePerNight}"
+                           th:classappend="${#fields.hasErrors('pricePerNight')} ? 'invalid'">
+                    <p class="field-error" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"></p>
+                </div>
             </div>
-            <div>
-                <label for="pricePerNight">Çmimi për natë (€)</label>
-                <input id="pricePerNight" type="number" min="1" step="0.01" th:field="*{pricePerNight}"
-                       th:classappend="${#fields.hasErrors('pricePerNight')} ? 'invalid'">
-                <p class="field-error" th:if="${#fields.hasErrors('pricePerNight')}" th:errors="*{pricePerNight}"></p>
-            </div>
-        </div>
+        </fieldset>
 
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Ruaj</button>
+            <button th:unless="${del}" type="submit" class="btn btn-primary">Ruaj</button>
+            <button th:if="${del and !hasReservations}" type="submit" class="btn btn-danger">Po, fshije</button>
+            <a th:if="${del and hasReservations}" class="btn"
+               th:href="@{/app/rooms/{id}(id=${roomId})}">Shiko rezervimet</a>
             <a class="btn" th:href="@{/admin/rooms}">Anulo</a>
         </div>
     </form>
