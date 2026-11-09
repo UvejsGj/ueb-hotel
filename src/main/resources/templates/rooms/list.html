@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Dhomat · Hoteli</title>
+</head>
+<body>
+<section>
+    <div class="page-head">
+        <h1>Dhomat</h1>
+        <a class="btn btn-primary" th:href="@{/admin/rooms/new}">+ Dhomë e re</a>
+    </div>
+
+    <p class="empty" th:if="${#lists.isEmpty(rooms)}">Ende nuk ka dhoma.</p>
+
+    <div class="table-wrap" th:unless="${#lists.isEmpty(rooms)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Numri</th>
+                <th>Tipi</th>
+                <th>Kapaciteti</th>
+                <th>Çmimi / natë</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="room : ${rooms}">
+                <td><a th:href="@{/app/rooms/{id}(id=${room.id})}" th:text="${room.number}">101</a></td>
+                <td th:text="${room.type.label}">Dyshe</td>
+                <td th:text="${room.capacity}">2</td>
+                <td th:text="|${#numbers.formatDecimal(room.pricePerNight, 1, 2)} €|">50.00 €</td>
+                <td class="actions">
+                    <a class="btn btn-small" th:href="@{/admin/rooms/{id}/edit(id=${room.id})}">Ndrysho</a>
+                    <form th:action="@{/admin/rooms/{id}/delete(id=${room.id})}" method="post" class="inline"
+                          onsubmit="return confirm('Ta fshij këtë dhomë?');">
+                        <button type="submit" class="btn btn-small btn-danger">Fshi</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

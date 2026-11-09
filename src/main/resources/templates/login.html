@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Hyrja · Hoteli</title>
+</head>
+<body>
+<section class="card narrow">
+    <h1>Hyrja</h1>
+    <p class="alert alert-error" th:if="${param.error}">Përdoruesi ose fjalëkalimi është i gabuar.</p>
+    <p class="alert alert-success" th:if="${param.logout}">Dolët nga llogaria.</p>
+
+    <form th:action="@{/login}" method="post" class="form">
+        <label for="username">Përdoruesi</label>
+        <input id="username" name="username" type="text" autocomplete="username" required autofocus>
+
+        <label for="password">Fjalëkalimi</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+
+        <button type="submit" class="btn btn-primary">Hyr</button>
+    </form>
+</section>
+</body>
+</html>

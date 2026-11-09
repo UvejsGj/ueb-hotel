@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Rezervimi · Hoteli</title>
+</head>
+<body>
+<section class="card narrow">
+    <h1 th:text="${reservationId == null} ? 'Rezervim i ri' : 'Ndrysho rezervimin'">Rezervim i ri</h1>
+
+    <form th:object="${form}" method="post" class="form" novalidate
+          th:action="${reservationId == null} ? @{/app/reservations/new} : @{/app/reservations/{id}/edit(id=${reservationId})}">
+
+        <label for="guestName">Emri i mysafirit</label>
+        <input id="guestName" type="text" th:field="*{guestName}" maxlength="80"
+               th:classappend="${#fields.hasErrors('guestName')} ? 'invalid'">
+        <p class="field-error" th:if="${#fields.hasErrors('guestName')}" th:errors="*{guestName}"></p>
+
+        <label for="guestPhone">Telefoni <span class="muted">(opsional)</span></label>
+        <input id="guestPhone" type="tel" th:field="*{guestPhone}" maxlength="20"
+               th:classappend="${#fields.hasErrors('guestPhone')} ? 'invalid'">
+        <p class="field-error" th:if="${#fields.hasErrors('guestPhone')}" th:errors="*{guestPhone}"></p>
+
+        <div class="row">
+            <div>
+                <label for="checkIn">Ardhja</label>
+                <input id="checkIn" type="date" th:field="*{checkIn}"
+                       th:classappend="${#fields.hasErrors('checkIn')} ? 'invalid'">
+                <p class="field-error" th:if="${#fields.hasErrors('checkIn')}" th:errors="*{checkIn}"></p>
+            </div>
+            <div>
+                <label for="checkOut">Largimi</label>
+                <input id="checkOut" type="date" th:field="*{checkOut}"
+                       th:classappend="${#fields.hasErrors('checkOut')} ? 'invalid'">
+                <p class="field-error" th:if="${#fields.hasErrors('checkOut')}" th:errors="*{checkOut}"></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label for="roomId">Dhoma</label>
+                <select id="roomId" th:field="*{roomId}"
+                        th:classappend="${#fields.hasErrors('roomId')} ? 'invalid'">
+                    <option value="">— zgjidhni —</option>
+                    <option th:each="room : ${rooms}" th:value="${room.id}"
+                            th:text="|${room.number} · ${room.type.label} · ${room.capacity} persona · ${#numbers.formatDecimal(room.pricePerNight, 1, 2)} €|">
+                        101 · Dyshe · 2 persona · 50.00 €
+                    </option>
+                </select>
+                <p class="field-error" th:if="${#fields.hasErrors('roomId')}" th:errors="*{roomId}"></p>
+            </div>
+            <div>
+                <label for="guests">Persona</label>
+                <input id="guests" type="number" min="1" th:field="*{guests}"
+                       th:classappend="${#fields.hasErrors('guests')} ? 'invalid'">
+                <p class="field-error" th:if="${#fields.hasErrors('guests')}" th:errors="*{guests}"></p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Ruaj</button>
+            <a class="btn" th:href="@{/app/reservations}">Anulo</a>
+        </div>
+    </form>
+</section>
+</body>
+</html>

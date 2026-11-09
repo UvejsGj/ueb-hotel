@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<header th:fragment="nav" class="topbar">
+    <div class="container topbar-inner">
+        <a class="brand" th:href="@{/}">🏨 Hoteli</a>
+        <nav th:if="${currentUser != null}">
+            <a th:href="@{/app/reservations}">Rezervimet</a>
+            <a th:if="${isAdmin}" th:href="@{/admin/rooms}">Dhomat</a>
+        </nav>
+        <div class="user" th:if="${currentUser != null}">
+            <span>
+                <strong th:text="${currentUser}">recepsion</strong>
+                <small class="badge" th:text="${isAdmin} ? 'ADMIN' : 'USER'">USER</small>
+            </span>
+            <form th:action="@{/logout}" method="post" class="inline">
+                <button type="submit" class="btn btn-link">Dil</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<div th:fragment="flash">
+    <p class="alert alert-success" th:if="${success}" th:text="${success}">U ruajt.</p>
+    <p class="alert alert-error" th:if="${error}" th:text="${error}">Gabim.</p>
+</div>
+
+<footer th:fragment="footer" class="footer">
+    <div class="container">ueb-hotel · Recepsioni i hotelit</div>
+</footer>
+
+</body>
+</html>

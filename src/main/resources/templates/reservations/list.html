@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Rezervimet · Hoteli</title>
+</head>
+<body>
+<section>
+    <div class="page-head">
+        <h1>Rezervimet</h1>
+        <a class="btn btn-primary" th:href="@{/app/reservations/new}">+ Rezervim i ri</a>
+    </div>
+
+    <p class="empty" th:if="${#lists.isEmpty(reservations)}">Ende nuk ka rezervime.</p>
+
+    <div class="table-wrap" th:unless="${#lists.isEmpty(reservations)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Mysafiri</th>
+                <th>Dhoma</th>
+                <th>Ardhja</th>
+                <th>Largimi</th>
+                <th>Netë</th>
+                <th>Persona</th>
+                <th>Shtuar nga</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${reservations}">
+                <td>
+                    <strong th:text="${r.guestName}">Arta Krasniqi</strong>
+                    <div class="muted" th:if="${r.guestPhone}" th:text="${r.guestPhone}">044 123 456</div>
+                </td>
+                <td>
+                    <a th:href="@{/app/rooms/{id}(id=${r.room.id})}" th:text="${r.room.number}">101</a>
+                    <span class="muted" th:text="${r.room.type.label}">Dyshe</span>
+                </td>
+                <td th:text="${#temporals.format(r.checkIn, 'dd.MM.yyyy')}">01.12.2026</td>
+                <td th:text="${#temporals.format(r.checkOut, 'dd.MM.yyyy')}">05.12.2026</td>
+                <td th:text="${r.nights}">4</td>
+                <td th:text="${r.guests}">2</td>
+                <td class="muted" th:text="${r.createdBy}">recepsion</td>
+                <td class="actions">
+                    <a class="btn btn-small" th:href="@{/app/reservations/{id}/edit(id=${r.id})}">Ndrysho</a>
+                    <form th:if="${isAdmin}" th:action="@{/admin/reservations/{id}/delete(id=${r.id})}"
+                          method="post" class="inline"
+                          onsubmit="return confirm('Ta fshij këtë rezervim?');">
+                        <button type="submit" class="btn btn-small btn-danger">Fshi</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

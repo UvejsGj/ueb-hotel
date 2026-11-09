@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Dhoma · Hoteli</title>
+</head>
+<body>
+<section>
+    <div class="page-head">
+        <h1>Dhoma <span th:text="${room.number}">101</span></h1>
+        <a th:if="${isAdmin}" class="btn" th:href="@{/admin/rooms/{id}/edit(id=${room.id})}">Ndrysho dhomën</a>
+    </div>
+
+    <dl class="facts">
+        <div><dt>Tipi</dt><dd th:text="${room.type.label}">Dyshe</dd></div>
+        <div><dt>Kapaciteti</dt><dd th:text="|${room.capacity} persona|">2 persona</dd></div>
+        <div><dt>Çmimi / natë</dt><dd th:text="|${#numbers.formatDecimal(room.pricePerNight, 1, 2)} €|">50.00 €</dd></div>
+    </dl>
+
+    <h2>Rezervimet e kësaj dhome</h2>
+    <p class="empty" th:if="${#lists.isEmpty(reservations)}">Kjo dhomë ende nuk ka rezervime.</p>
+
+    <div class="table-wrap" th:unless="${#lists.isEmpty(reservations)}">
+        <table>
+            <thead>
+            <tr>
+                <th>Mysafiri</th>
+                <th>Ardhja</th>
+                <th>Largimi</th>
+                <th>Netë</th>
+                <th>Persona</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${reservations}">
+                <td th:text="${r.guestName}">Arta Krasniqi</td>
+                <td th:text="${#temporals.format(r.checkIn, 'dd.MM.yyyy')}">01.12.2026</td>
+                <td th:text="${#temporals.format(r.checkOut, 'dd.MM.yyyy')}">05.12.2026</td>
+                <td th:text="${r.nights}">4</td>
+                <td th:text="${r.guests}">2</td>
+                <td class="actions">
+                    <a class="btn btn-small" th:href="@{/app/reservations/{id}/edit(id=${r.id})}">Ndrysho</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <p><a th:href="@{/app/reservations}">← Te të gjitha rezervimet</a></p>
+</section>
+</body>
+</html>

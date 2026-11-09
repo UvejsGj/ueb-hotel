@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="sq" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::section})}">
+<head>
+    <title>Faqja nuk u gjet · Hoteli</title>
+</head>
+<body>
+<section class="card narrow center">
+    <h1>404 · Faqja nuk u gjet</h1>
+    <p>Faqja ose rekordi që kërkuat nuk ekziston.</p>
+    <a class="btn" th:href="@{/app/reservations}">Kthehu te rezervimet</a>
+</section>
+</body>
+</html>
