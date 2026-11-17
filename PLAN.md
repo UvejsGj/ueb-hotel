@@ -165,6 +165,17 @@ Në fund jepmë draftin e AI-LOG.md.
 
 **Branch:** `feature/login` (nga `main` i përditësuar) · **Afati:** e premte 20.11 (ligjërata e Security: e enjte 19.11)
 
+**Para se të fillojë Dioni (vendosni në grup deri të mërkurën 18.11):**
+
+1. **Butonat e ADMIN-it fshihen për USER-in.** Pas login-it, USER-i i sheh ende "Fshij" (rezervimet dhe dhomat), "Dhomë e re" dhe "Ndrysho" te dhomat, dhe merr 403 kur i klikon. Propozimi: Dioni shton te `pom.xml` `org.thymeleaf.extras:thymeleaf-extras-springsecurity6` (pa `<version>`, e menaxhon Spring Boot 4.1) dhe i mbështjell butonat me `sec:authorize="hasRole('ADMIN')"`. Kjo është librari jashtë listës te CLAUDE.md, prandaj duhet OK-ja e grupit; pas OK-së përditësoni edhe listën e starter-ave te CLAUDE.md. Dioni e ndryshon `reservations/list.html` në PR-in e vet: Xhemaledini (pronari) është edhe rishikuesi i tij, pra e aprovon aty.
+2. **Faqja 403 në fazën 1.** `access-denied.html` vjen në fazën 2; deri atëherë USER-i që hap `/admin/...` sheh faqen Whitelabel të Spring-ut. Muzlindi shton `templates/error/403.html` (si `error/404.html`: "Nuk keni qasje në këtë faqe" + link te `/app/reservations`), mundësisht te PR-i i layout-it.
+3. **Fjalëkalimet në properties.** Te `application-dev.properties` (file i Uvejs-it: Dioni i shton në PR-in e vet dhe e shënon në përshkrim):
+   ```properties
+   app.user.password=${APP_USER_PASSWORD:user}
+   app.admin.password=${APP_ADMIN_PASSWORD:admin}
+   ```
+4. **`createdBy`.** Pas login-it, rezervimet e reja ruajnë username-in e të kyçurit në vend të "system". `ReservationController` s'ka nevojë për ndryshim (e lexon tashmë nga `Principal`), por Dioni e provon në psql.
+
 **Prompti për Claude:**
 ```text
 Lexo CLAUDE.md dhe SPEC.md. Jam Dion, punoj në branch-in feature/login.
@@ -172,7 +183,8 @@ Detyra (faza 1: përdorues in-memory):
 1. Shto spring-boot-starter-security te pom.xml.
 2. config/SecurityConfig:
    - PasswordEncoder BCrypt; dy përdorues in-memory: user (ROLE_USER) dhe admin (ROLE_ADMIN).
-     Fjalëkalimet nga properties me vlerë default (p.sh. ${APP_USER_PASSWORD:user}), jo të shkruara në Java.
+     Fjalëkalimet nga application-dev.properties: app.user.password=${APP_USER_PASSWORD:user}
+     dhe app.admin.password=${APP_ADMIN_PASSWORD:admin}, të lexuara me @Value, jo të shkruara në Java.
    - /login, /css/**, /error/** të lejuara për të gjithë; /admin/** vetëm ADMIN; /app/** USER dhe ADMIN;
      çdo gjë tjetër kërkon login.
    - formLogin me faqen tonë /login, pas login-it te /app/reservations; logout me POST te /logout,
@@ -182,10 +194,15 @@ Detyra (faza 1: përdorues in-memory):
    mesazhi "Username ose fjalëkalimi i gabuar" kur ka ?error, "U çkyçe me sukses" kur ka ?logout.
    Forma me th:action="@{/login}" që të ketë CSRF.
 5. Kontrollo që format POST të të tjerëve (fshirja, ruajtja, logout) kanë th:action, ndryshe dalin 403.
-Shpjegomë rrjedhën e login-it dhe pse duhet CSRF te format. Në fund jepmë draftin e AI-LOG.md.
+6. Nëse grupi e ka pranuar thymeleaf-extras-springsecurity6 (shih "Para se të fillojë Dioni", pika 1):
+   shtoje te pom.xml pa <version> dhe fshihi për USER-in me sec:authorize="hasRole('ADMIN')":
+   "Fshij" te reservations/list.html; "Dhomë e re", "Ndrysho" dhe "Fshij" te rooms/list.html;
+   "Ndrysho" te rooms/detail.html. Mos ndrysho asgjë tjetër në ato file.
+Shpjegomë rrjedhën e login-it, pse duhet CSRF te format dhe si e di sec:authorize rolin e përdoruesit.
+Në fund jepmë draftin e AI-LOG.md.
 ```
 
-**Gati kur:** pa login çdo faqe të çon te `/login` jote (jo faqja e Spring-ut); `user` e sheh `/app/**` por jo `/admin/**`; `admin` i sheh të gjitha; "Dil" të kthen te login-i me mesazh.
+**Gati kur:** pa login çdo faqe të çon te `/login` jote (jo faqja e Spring-ut); `user` e sheh `/app/**` por jo `/admin/**`, dhe nuk i sheh butonat e ADMIN-it; `user` që hap `/admin/rooms/new` me dorë sheh faqen 403 të Muzlindit (jo Whitelabel); `admin` i sheh të gjitha; një rezervim i ri nga `user` ka `created_by = 'user'` në psql; "Dil" të kthen te login-i me mesazh.
 
 ---
 

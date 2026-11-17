@@ -42,6 +42,34 @@
 - **Çka bëmë:** e pranuam. Ngjyrat i vendosëm si variabla CSS (`--ink`, `--paper`, `--accent`) që të ndryshohen në një vend. Fontet vijnë nga interneti; pa internet faqja përdor Georgia/Arial/Consolas.
 - **Si e verifikuam:** ./mvnw spring-boot:run me main + feature/layout: /app/rooms, /app/rooms/1, /app/reservations, /app/reservations/new (edhe me gabimet e formës bosh) dhe /nuk-ekziston në 1366 px dhe 375 px; fontet ngarkohen (`document.fonts.check`); në celular faqja nuk rrëshqet anash (tabela rrëshqet brenda vetes).
 
+### 2026-11-17, Rishikimi i PR #4 (rezervimet) dhe testi i PR #5 + layout-it, Uvejs
+
+- **Pyetja:** rishikoje PR #4 të Xhemaledinit në vendin tim; pas rregullimit kontrolloje përsëri. Pastaj shpjegoje konfliktin te PR #5 i Dionit dhe kontrollo PR #5 bashkë me layout-in e Muzlindit.
+- **Përgjigjja:** Claude e nisi branch-in lokalisht (port 8082, PostgreSQL në Docker, layout i përkohshëm jashtë Git-it) dhe gjeti një gabim: `POST /app/reservations/new` me `id=3` e mbishkruante rezervimin 3, sepse `@ModelAttribute` lidh edhe `id`-në. Propozoi `reservation.setId(null)` te `create()` dhe shkroi review-n "Request changes"; pas rregullimit e provoi përsëri dhe shkroi aprovimin. Konfliktin te PR #5 e shpjegoi: Xhemaledini dhe Dioni e shtuan hyrjen në fund të AI-LOG.md në të njëjtin vend. Pastaj i testoi `main` + layout + dhomat bashkë.
+- **Çka bëmë:** i pranuam. Review-të i postuam nga llogaria ime pasi i lexova. Xhemaledini e shtoi `setId(null)`; Dioni e zgjodhi konfliktin duke i mbajtur të dyja hyrjet. Vërejtjet jo bllokuese (renditja e merge-it, butoni "Fshij" për USER-in) i lamë për layout-in dhe login-in.
+- **Si e verifikuam:** me curl dhe psql para dhe pas rregullimit: me `id=3` rreshti i "Driton Berisha" u mbishkrua para, por jo pas; forma bosh 6 gabime; `created_at` i pandryshuar pas ndryshimit; 404 dhe 405. Me layout-in: të gjitha faqet 200, menyja aktive saktë, 404 pa Whitelabel; dhomat: numri i dyfishtë, fshirja e dhomës me rezervime, `id=2` i futur s'e mbishkruan dhomën. Të dhënat e testit i kthyem si ishin.
+
+### 2026-11-17, Vendimet për login-in në PLAN.md, Uvejs
+
+- **Pyetja:** a janë te file-t .md të gjitha informatat që i duhen Dionit për login-in; pastaj: shtoji ato që mungojnë te PLAN.md.
+- **Përgjigjja:** Claude i krahasoi PLAN.md, SPEC.md dhe CLAUDE.md me kodin dhe gjeti 4 mungesa: fshehja e butonave të ADMIN-it për USER-in, faqja 403 në fazën 1, emrat e fjalëkalimeve në properties dhe kontrolli i `createdBy`. I shtoi te pika 4b, ia përditësoi Dionit promptin dhe "Gati kur".
+- **Çka bëmë:** i pranuam, por përdorimin e `thymeleaf-extras-springsecurity6` (`sec:authorize`) e lamë si propozim që e vendos grupi, sepse s'është në listën e starter-ave te CLAUDE.md. Hapëm PR #8.
+- **Si e verifikuam:** në pom-in e Spring Boot 4.1.1 kontrolluam që versioni i `thymeleaf-extras-springsecurity6` (3.1.5) menaxhohet vetë; me grep te template-t gjetëm saktë cilët butona shkojnë te `/admin/**`.
+
+### 2026-11-17, Rregullimi pas rishikimit të PR #4, Xhemaledin
+
+- **Pyetja:** Uvejs e rishikoi PR #4 dhe kërkoi ndryshim: krijimi lejonte mbishkrimin e një rezervimi ekzistues kur kërkesa dërgon `id` (p.sh. `id=3` te `POST /app/reservations/new`). I kërkova Claude-it ta rregullojë; pastaj edhe t'i heqë komentet nga ReservationController.
+- **Përgjigjja:** Claude shtoi `reservation.setId(null);` te `create()`, para kontrollit `hasErrors()` (jo pas tij), që edhe forma me gabime të mbetet te `/app/reservations/new` e jo te `/{id}/edit`. Pastaj hoqi 5 komentet nga ReservationController.
+- **Çka bëmë:** i pranuam të dyja. Vendin e `setId(null)` e ndryshuam nga sugjerimi i Uvejsit (para `hasErrors()`), për arsyen më sipër. Komentet i hoqëm që kodi të jetë më i pastër; shpjegimin e dimë përmendësh për mbrojtjen.
+- **Si e verifikuam:** me PostgreSQL dhe layout të përkohshëm: `POST /app/reservations/new` me `id=3` krijoi rreshtin e ri 7 dhe "Driton Berisha" (id 3) mbeti i paprekur në psql; me `id=3` dhe emër bosh forma tregoi gabimin dhe `action="/app/reservations/new"`. Pas heqjes së komenteve `./mvnw compile` kaloi pa gabime. Uvejs e aprovoi PR-in.
+
+### 2026-11-17, Rishikimi i PR #5 (dhomat) të Dionit, Xhemaledin
+
+- **Pyetja:** sipas PLAN.md e rishikoj PR-in e Dionit; i kërkova Claude-it ta rishikojë dhe ta provojë PR #5, pastaj prapë pasi Dion e bëri merge `main`-in në `feature/rooms`.
+- **Përgjigjja:** Claude e lexoi diff-in dhe e nisi branch-in në një worktree të veçantë me PostgreSQL në Docker (Dion e kishte provuar vetëm me H2). Nuk gjeti gjë bllokuese; dha 5 sugjerime: `trim()` i numrit të dhomës (" 101 " ruhej si dhomë e re), gabim në anglisht për `type=KING`, renditja e merge-it pas layout-it, konflikti te `AI-LOG.md`, butonat e adminit për USER-in. Në rishikimin e dytë kontrolloi që konflikti te `AI-LOG.md` u zgjidh duke i mbajtur të gjitha hyrjet.
+- **Çka bëmë:** e aprovuam PR-in me komente nga llogaria ime dhe pas merge-it të `main`-it shtuam një koment të shkurtër. Sugjerimet i lamë jo bllokuese; `trim()` mbetet për Dionin.
+- **Si e verifikuam:** me curl dhe psql: lista, faqja e dhomës me rezervimet sipas `checkIn`, 404, validimi në shqip, numri i dyfishtë te krijimi dhe ndryshimi, fshirja e bllokuar e dhomës me rezervime, 405 për GET te `/delete`, `id=2` te krijimi nuk e mbishkruan dhomën 2. Te kodi i bashkuar: dhoma 501 → rezervim → fshirja bllokohet → pas fshirjes së rezervimit dhoma fshihet. Të dhënat e provës i fshimë; databaza mbeti me 6 dhoma dhe 4 rezervime.
+
 ### 2026-11-17, Ngjyrat e dizajnit, Muzlind
 
 - **Pyetja:** dizajni ishte shumë i thjeshtë; shto disa ngjyra dhe bëje më interesant.
