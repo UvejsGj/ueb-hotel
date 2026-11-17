@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Rezervimet</title>
+</head>
+<body>
+<main>
+    <h1>Rezervimet</h1>
+
+    <p><a class="btn" th:href="@{/app/reservations/new}">Rezervim i ri</a></p>
+
+    <p th:if="${#lists.isEmpty(reservations)}">Nuk ka rezervime.</p>
+
+    <table class="table" th:unless="${#lists.isEmpty(reservations)}">
+        <thead>
+        <tr>
+            <th>Mysafiri</th>
+            <th>E-mail</th>
+            <th>Dhoma</th>
+            <th>Hyrja</th>
+            <th>Dalja</th>
+            <th>Mysafirë</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res : ${reservations}">
+            <td th:text="${res.guestName}">Arben Hoxha</td>
+            <td th:text="${res.guestEmail}">arben@example.com</td>
+            <td><a th:href="@{/app/rooms/{id}(id=${res.room.id})}" th:text="${res.room.number}">101</a></td>
+            <td th:text="${#temporals.format(res.checkIn, 'dd.MM.yyyy')}">03.12.2026</td>
+            <td th:text="${#temporals.format(res.checkOut, 'dd.MM.yyyy')}">06.12.2026</td>
+            <td th:text="${res.guests}">1</td>
+            <td>
+                <a class="btn" th:href="@{/app/reservations/{id}/edit(id=${res.id})}">Ndrysho</a>
+                <form method="post" th:action="@{/admin/reservations/{id}/delete(id=${res.id})}">
+                    <button type="submit" class="btn btn-danger">Fshij</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
