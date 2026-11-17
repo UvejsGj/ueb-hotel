@@ -45,7 +45,7 @@ src/main/resources/
     ├── layout.html
     ├── fragments.html
     ├── login.html
-    ├── error/404.html
+    ├── error/        404.html, 403.html
     ├── rooms/        list.html, form.html, detail.html
     └── reservations/ list.html, form.html
 ```
@@ -98,7 +98,7 @@ Pastaj `docker start hotel-db` / `docker stop hotel-db`. Asnjë fjalëkalim i v�
 
 **Template-t (Thymeleaf)**
 - Çdo faqe: `<html th:replace="~{layout :: layout(~{::title}, ~{::main})}">` me `<title>` dhe `<main>` të vetat. Mos kopjo `<head>`, menynë apo footer-in në faqe.
-- Fragmentet me `th:replace="~{fragments :: header('rooms')}"` (sintaksa `~{...}`, jo e vjetra). Çelësat e menysë: `'reservations'`, `'rooms'`.
+- Fragmentet me `th:replace="~{fragments :: header('rooms')}"` (sintaksa `~{...}`, jo e vjetra). Çelësat e menysë: `'reservations'`, `'rooms'`, `'login'` (fsheh menynë dhe "Dil") dhe `''` (asnjë link aktiv, p.sh. 404). Faqet nuk e thërrasin `header` vetë: `layout.html` e gjen çelësin nga emri i template-it (`rooms/...` → `'rooms'`, `reservations/...` → `'reservations'`, `login` → `'login'`).
 - `th:text` gjithmonë, **kurrë `th:utext`** për të dhëna të përdoruesit (XSS).
 - Format me `th:action="@{...}"` (jo `action=""` i thjeshtë): kështu Spring Security e shton vetë token-in CSRF.
 - Gabimi pranë fushës: `<p class="error" th:if="${#fields.hasErrors('guestName')}" th:errors="*{guestName}"></p>`.
@@ -109,7 +109,7 @@ Pastaj `docker start hotel-db` / `docker stop hotel-db`. Asnjë fjalëkalim i v�
 | File | Pronari | Të tjerët |
 |---|---|---|
 | `pom.xml`, `application*.properties`, entitetet, repository-t, `SeedData.java` | Uvejs | kërkojnë ndryshim te Uvejs (metodë e re në repository: shtojeni vetë në PR-in tuaj dhe shënojeni) |
-| `layout.html`, `fragments.html`, `app.css`, `error/404.html` | Muzlind | linku i ri në meny: kërkojeni te Muzlind |
+| `layout.html`, `fragments.html`, `app.css`, `error/404.html`, `error/403.html` | Muzlind | linku i ri në meny: kërkojeni te Muzlind |
 | `ReservationController`, `reservations/*` | Xhemaledin | |
 | `RoomController`, `rooms/*`, `SecurityConfig`, `AuthController`, `login.html` | Dion | Dion shton `spring-boot-starter-security` te `pom.xml` |
 | `SPEC.md`, `AI-LOG.md` | të gjithë; Muzlind koordinon | |
