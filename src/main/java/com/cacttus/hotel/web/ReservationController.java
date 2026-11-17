@@ -27,7 +27,6 @@ public class ReservationController {
     private final ReservationRepository reservationRepository;
     private final RoomRepository roomRepository;
 
-    // Lista e dhomave për <select>-in në formë. Shtohet në model për çdo request të këtij controller-i.
     @ModelAttribute("rooms")
     public List<Room> rooms() {
         return roomRepository.findAllByOrderByNumberAsc();
@@ -50,12 +49,10 @@ public class ReservationController {
                          BindingResult result,
                          Principal principal,
                          RedirectAttributes redirectAttributes) {
-        // Krijimi gjithmonë krijon rezervim të ri, edhe nëse kërkesa dërgon një id.
         reservation.setId(null);
         if (result.hasErrors()) {
             return "reservations/form";
         }
-        // Login-i vjen më vonë (feature/login); deri atëherë principal është null.
         if (principal != null) {
             reservation.setCreatedBy(principal.getName());
         } else {
@@ -82,12 +79,10 @@ public class ReservationController {
         if (!reservationRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        // id-ja vjen nga URL-ja, jo nga forma.
         reservation.setId(id);
         if (result.hasErrors()) {
             return "reservations/form";
         }
-        // createdBy dhe createdAt kanë @Column(updatable = false), prandaj mbesin si në databazë.
         reservationRepository.save(reservation);
         redirectAttributes.addFlashAttribute("message", "Rezervimi u ndryshua");
         return "redirect:/app/reservations";
