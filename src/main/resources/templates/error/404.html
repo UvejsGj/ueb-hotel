@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Faqja nuk u gjet</title>
+</head>
+<body>
+<main>
+    <h1>Faqja nuk u gjet</h1>
+    <p>Adresa që kërkuat nuk ekziston.</p>
+    <p><a class="btn" th:href="@{/app/reservations}">Kthehu te rezervimet</a></p>
+</main>
+</body>
+</html>
