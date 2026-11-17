@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sq">
+<body>
+
+<!-- Header-i (shiriti majtas): emri i hotelit, data e sotme, menyja dhe butoni "Dil".
+     active = 'reservations', 'rooms', 'login' ose '' -->
+<header th:fragment="header(active)" class="site-header">
+    <a class="brand" th:href="@{/app/reservations}">
+        <span class="brand-name">Hotel</span>
+        <span class="brand-sub">Recepsioni</span>
+    </a>
+
+    <p class="today" th:text="'Sot · ' + ${#temporals.format(#temporals.createToday(), 'dd.MM.yyyy')}">Sot · 17.11.2026</p>
+
+    <nav th:unless="${active == 'login'}">
+        <a th:href="@{/app/reservations}" th:classappend="${active == 'reservations'} ? 'active'">
+            <span class="nav-num">01</span> Rezervimet
+        </a>
+        <a th:href="@{/app/rooms}" th:classappend="${active == 'rooms'} ? 'active'">
+            <span class="nav-num">02</span> Dhomat
+        </a>
+    </nav>
+
+    <form th:unless="${active == 'login'}" class="logout" method="post" th:action="@{/logout}">
+        <button type="submit" class="logout-btn">Dil →</button>
+    </form>
+</header>
+
+<!-- Mesazhet pas veprimit (addFlashAttribute "message" / "error").
+     Nuk shfaqet në faqet e gabimit: aty Spring e vendos vetë "status" dhe "error" (p.sh. "Not Found"). -->
+<div th:fragment="flash" th:unless="${status}">
+    <p class="flash-success" th:if="${message}" th:text="${message}">Mesazhi i suksesit</p>
+    <p class="flash-error" th:if="${error}" th:text="${error}">Mesazhi i gabimit</p>
+</div>
+
+<footer th:fragment="footer" class="site-footer">© 2026 ueb-hotel · Cacttus Education</footer>
+
+</body>
+</html>
