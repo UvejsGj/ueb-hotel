@@ -83,3 +83,10 @@
 - **Përgjigjja:** Claude e ktheu në stil art deco të një hoteli të madh: sfondi me pika (`radial-gradient`), shiriti jeshil me vija diagonale (`repeating-linear-gradient`) dhe kornizë të dyfishtë bronzi, emri "Hotel" në kornizë me ✦ ✦ ✦, titujt shumë të mëdhenj me hije (`text-shadow`) dhe vijë të dyfishtë, butonat dhe kutitë me hije të forta (`box-shadow`) që lëvizin kur kalon me mi, rreshtat e tabelës me radhë (`nth-child(even)`), numrat e dhomave si varëse çelësash, shirit portokalli për emrin e seksionit, mesazhet me ✓/✕, 404/403 me numër gjigant. U shtua një ngjyrë (portokalli i tokës) dhe një font dekorativ (Playfair Display italic).
 - **Çka bëmë:** e pranuam. Ndryshuan vetëm app.css, layout.html (fonti) dhe fragments.html ("— Recepsioni —", "Est. MMXXVI"); klasat e faqeve të të tjerëve mbetën të njëjta.
 - **Si e verifikuam:** ./mvnw spring-boot:run: /app/rooms, /app/rooms/1, forma bosh me gabimet, flash-i i kuq pas fshirjes së dhomës 101 (s'u fshi), /nuk-ekziston, në desktop dhe në 375 px pa rrëshqitje anash.
+
+### 2026-11-17, Vërejtjet e Dionit te PR #10, Muzlind
+
+- **Pyetja:** rregullo dy vërejtjet jo bllokuese të Dionit te PR #10.
+- **Përgjigjja:** Claude i ktheu dy komentet HTML të `layout.html` (fontet dhe emri i seksionit) në komente Thymeleaf `<!--/* */-->`, që të mos i dërgohen shfletuesit. Te CLAUDE.md e rishkroi rreshtin e fragmenteve: hoqi shembullin `header('rooms')` dhe shkroi që `header`, `flash` dhe `footer` i thërret vetëm `layout.html`.
+- **Çka bëmë:** e pranuam të dyja; s'ndryshoi asgjë në pamje.
+- **Si e verifikuam:** ./mvnw spring-boot:run (porti 8081): /app/rooms, /app/reservations dhe /nuk-ekziston (me `Accept: text/html`) kthejnë faqen tonë dhe HTML-ja nuk ka asnjë `<!--`.

@@ -98,7 +98,7 @@ Pastaj `docker start hotel-db` / `docker stop hotel-db`. Asnjë fjalëkalim i v�
 
 **Template-t (Thymeleaf)**
 - Çdo faqe: `<html th:replace="~{layout :: layout(~{::title}, ~{::main})}">` me `<title>` dhe `<main>` të vetat. Mos kopjo `<head>`, menynë apo footer-in në faqe.
-- Fragmentet me `th:replace="~{fragments :: header('rooms')}"` (sintaksa `~{...}`, jo e vjetra). Çelësat e menysë: `'reservations'`, `'rooms'`, `'login'` (fsheh menynë dhe "Dil") dhe `''` (asnjë link aktiv, p.sh. 404). Faqet nuk e thërrasin `header` vetë: `layout.html` e gjen çelësin nga emri i template-it (`rooms/...` → `'rooms'`, `reservations/...` → `'reservations'`, `login` → `'login'`).
+- Fragmentet thirren me sintaksën `~{...}` (jo të vjetrën). `header`-in, `flash`-in dhe `footer`-in i thërret vetëm `layout.html`; faqet nuk i thërrasin vetë. Layout-i e gjen çelësin e menysë nga emri i template-it: `rooms/...` → `'rooms'`, `reservations/...` → `'reservations'`, `login` → `'login'` (fsheh menynë dhe "Dil"), çdo faqe tjetër → `''` (asnjë link aktiv, p.sh. 404).
 - `th:text` gjithmonë, **kurrë `th:utext`** për të dhëna të përdoruesit (XSS).
 - Format me `th:action="@{...}"` (jo `action=""` i thjeshtë): kështu Spring Security e shton vetë token-in CSRF.
 - Gabimi pranë fushës: `<p class="error" th:if="${#fields.hasErrors('guestName')}" th:errors="*{guestName}"></p>`.
