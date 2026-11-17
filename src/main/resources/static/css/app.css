@@ -1,0 +1,436 @@
+/* app.css: stili i përbashkët i ueb-hotel (pa framework). Pronari: Muzlind
+   Ideja: si libri i regjistrimit në recepsion. Letër e bardhë-krem, bojë e zezë
+   dhe vetëm një ngjyrë (e kuqe e errët) për veprimet e rrezikshme dhe linkun aktiv. */
+
+/* ---------- Ngjyrat dhe fontet (variabla CSS) ---------- */
+:root {
+    --paper: #f4f1ea;       /* sfondi */
+    --paper-dark: #ebe6da;  /* rreshti nën mi, kutitë */
+    --ink: #1c1b19;         /* teksti dhe vijat kryesore */
+    --muted: #6f6a60;       /* teksti dytësor */
+    --rule: #d6cfbf;        /* vijat e holla */
+    --accent: #8a2a1f;      /* e vetmja ngjyrë: fshirja, gabimet, linku aktiv */
+
+    --font-title: "Libre Caslon Display", Georgia, serif;
+    --font-text: "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", Consolas, monospace;
+}
+
+/* ---------- Bazat ---------- */
+* {
+    box-sizing: border-box;
+}
+
+/* Faqja ndahet në dy kolona: shiriti majtas (header) dhe përmbajtja djathtas */
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 17rem 1fr;
+    grid-template-rows: 1fr auto;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: 16px;
+    line-height: 1.55;
+}
+
+h1,
+h2 {
+    font-family: var(--font-title);
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+h1 {
+    margin: 0 0 2rem;
+    padding-bottom: 1rem;
+    font-size: 3.2rem;
+    border-bottom: 1px solid var(--ink);
+}
+
+h2 {
+    margin: 3rem 0 1rem;
+    font-size: 1.9rem;
+}
+
+a {
+    color: var(--ink);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+}
+
+a:hover {
+    color: var(--accent);
+}
+
+/* ---------- Shiriti majtas (header) ---------- */
+.site-header {
+    grid-row: 1 / 3;              /* zë të dy rreshtat e kolonës së parë */
+    position: sticky;             /* qëndron në vend kur bën scroll */
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--ink);
+}
+
+.brand {
+    display: block;
+    text-decoration: none;
+}
+
+.brand-name {
+    display: block;
+    font-family: var(--font-title);
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.brand-sub,
+.today {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.brand-sub {
+    display: block;
+    margin-top: 0.4rem;
+}
+
+.today {
+    margin: 2rem 0 0;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--rule);
+}
+
+/* Menyja si indeks i librit: 01 Rezervimet, 02 Dhomat */
+nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+}
+
+nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 1.05rem;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: var(--ink);
+}
+
+nav a.active {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.nav-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+nav a.active .nav-num {
+    color: var(--accent);
+}
+
+/* "Dil" shkon në fund të shiritit */
+.logout {
+    margin-top: auto;
+}
+
+.logout-btn {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    color: var(--accent);
+}
+
+/* ---------- Përmbajtja dhe footer-i ---------- */
+.container {
+    width: 100%;
+    min-width: 0;            /* pa këtë, një tabelë e gjerë e zgjeron gjithë kolonën */
+    max-width: 68rem;
+    padding: 3.5rem 4rem 2rem;
+}
+
+.site-footer {
+    grid-column: 2;
+    padding: 1.2rem 4rem;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* ---------- Butonat ---------- */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: transparent;
+    color: var(--ink);
+}
+
+/* Linku pas butonit (p.sh. "Anulo", "Kthehu te dhomat") pak më larg */
+.btn + a {
+    margin-left: 1.2rem;
+}
+
+.btn-danger {
+    border-color: var(--accent);
+    background: transparent;
+    color: var(--accent);
+}
+
+.btn-danger:hover {
+    background: var(--accent);
+    color: var(--paper);
+}
+
+/* ---------- Mesazhet (flash) ---------- */
+.flash-success,
+.flash-error {
+    margin: 0 0 2rem;
+    padding: 0.8rem 1rem;
+    border-left: 3px solid var(--ink);
+    background: var(--paper-dark);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.flash-error {
+    border-left-color: var(--accent);
+    color: var(--accent);
+}
+
+/* ---------- Tabelat (si faqja e regjistrit) ---------- */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid var(--ink);
+    font-variant-numeric: tabular-nums;   /* numrat me gjerësi të njëjtë, rreshtohen bukur */
+}
+
+.table th,
+.table td {
+    padding: 0.85rem 0.9rem;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--rule);
+}
+
+/* Titujt e kolonave dhe etiketat (p.sh. "Kati" te faqja e dhomës) */
+.table th {
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.table thead th {
+    border-bottom: 1px solid var(--ink);
+}
+
+.table tbody tr:hover {
+    background: var(--paper-dark);
+}
+
+/* Linqet në tabelë (numri i dhomës) me font mono, si etiketa e çelësit */
+.table td a {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid var(--ink);
+}
+
+/* Kolona e fundit (butonat) në të djathtë */
+.table td:last-child {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Butonat brenda tabelës më të vegjël dhe vetëm me vijë */
+.table .btn {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.68rem;
+    background: transparent;
+    color: var(--ink);
+}
+
+.table .btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+}
+
+.table .btn-danger {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.table .btn-danger:hover {
+    background: var(--accent);
+    color: var(--paper);
+}
+
+/* Forma e fshirjes qëndron në të njëjtin rresht me "Ndrysho" */
+td form {
+    display: inline;
+}
+
+/* ---------- Format ---------- */
+form .form-row {
+    max-width: 30rem;
+    margin-bottom: 1.6rem;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 0.2rem;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+/* Fushat vetëm me vijë poshtë, si rreshti në libër */
+.form-row input,
+.form-row select {
+    width: 100%;
+    padding: 0.45rem 0;
+    border: none;
+    border-bottom: 1px solid var(--ink);
+    border-radius: 0;
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: 1.1rem;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+    outline: none;
+    border-bottom: 2px solid var(--accent);
+}
+
+.form-row a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Gabimi i validimit pranë fushës */
+.error {
+    margin: 0.35rem 0 0;
+    color: var(--accent);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* ---------- Faqet e gabimit (403, 404) ---------- */
+.error-code {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 8rem;
+    line-height: 1;
+    color: var(--accent);
+}
+
+/* ---------- Ekranet e vogla: shiriti bëhet shirit lart ---------- */
+@media (max-width: 800px) {
+    body {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .site-header {
+        grid-row: auto;
+        position: static;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem 2rem;
+        padding: 1.2rem 1.25rem;
+        border-right: none;
+        border-bottom: 1px solid var(--ink);
+    }
+
+    .brand-name {
+        font-size: 2rem;
+    }
+
+    .today {
+        display: none;
+    }
+
+    nav {
+        flex-direction: row;
+        gap: 1.2rem;
+        margin-top: 0;
+    }
+
+    nav a {
+        border-bottom: none;
+    }
+
+    .logout {
+        margin: 0 0 0 auto;
+    }
+
+    .container {
+        padding: 2rem 1.25rem;
+    }
+
+    /* Tabelat e gjera rrëshqasin brenda vetes, jo gjithë faqja */
+    .table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .site-footer {
+        grid-column: 1;
+        padding: 1rem 1.25rem;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+}

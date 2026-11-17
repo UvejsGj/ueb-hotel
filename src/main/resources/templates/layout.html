@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="sq" th:fragment="layout(title, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:replace="${title}">Hotel</title>
+    <!-- Tri fonte nga Google Fonts: Libre Caslon Display (titujt), Libre Franklin (teksti), IBM Plex Mono (numrat, etiketat) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&family=Libre+Franklin:wght@400;500;600&display=swap">
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<!--/* page = emri i template-it të faqes, p.sh. "rooms/list" ose "reservations/form".
+       Prej tij dimë cili link i menysë është aktiv. (Ky koment nuk i dërgohet shfletuesit.) */-->
+<body th:with="page=${#execInfo.processedTemplateName},
+               active=${page == 'login'} ? 'login'
+                    : (${#strings.startsWith(page, 'rooms/')} ? 'rooms'
+                    : (${#strings.startsWith(page, 'reservations/')} ? 'reservations' : ''))">
+
+<header th:replace="~{fragments :: header(${active})}"></header>
+
+<div class="container">
+    <div th:replace="~{fragments :: flash}"></div>
+
+    <main th:replace="${content}"></main>
+</div>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+
+</body>
+</html>
