@@ -21,6 +21,41 @@
 - **Çka bëmë:** i pranuam. Llojet e dhomës i dërgon controller-i (@ModelAttribute("types")) e jo T(...) në template, sepse Thymeleaf 3.1 nuk lejon thirrje statike në shprehje. Te krijimi room.setId(null), që një "id" i futur në formë të mos e mbishkruajë dhomën ekzistuese. Fshehja e butonave për USER pret login-in (feature/login).
 - **Si e verifikuam:** ./mvnw compile pa gabime. Docker nuk punonte në laptop, prandaj aplikacionin e nisëm njëherë me H2 në memorie dhe me një layout provë (asnjëra s'është në Git) dhe i provuam me curl: lista me 6 dhoma; /app/rooms/1 tregon rezervimin e Arben Hoxhës, /app/rooms/3 "Nuk ka rezervime"; id 999 → 404; forma bosh dhe vlerat jashtë kufijve tregojnë gabimet në shqip; numri 101 i dyfishtë (krijim dhe ndryshim) → "Ky numër dhome ekziston."; krijimi, ndryshimi dhe fshirja punojnë me flash; fshirja e dhomës 101 → "Dhoma ka rezervime dhe nuk mund të fshihet."; GET te /delete → 405. Mbetet: provë me PostgreSQL në Docker dhe me layout-in e Muzlindit para PR-it.
 
+### 2026-11-17, Layout, fragmentet, CSS dhe faqja 404, Muzlind
+
+- **Pyetja:** sipas PLAN.md pika 2: layout.html me fragmentin layout(title, content), fragments.html me header(active), flash dhe footer, app.css pa framework me klasat e përbashkëta, dhe error/404.html.
+- **Përgjigjja:** Claude krijoi të katër file-t. Layout-i e merr `<title>` dhe `<main>` nga faqja me th:replace, dhe e gjen vetë linkun aktiv të menysë nga emri i template-it (`#execInfo.processedTemplateName`, p.sh. "rooms/list"), sepse faqet e Xhemaledinit dhe të Dionit e thërrasin layout-in vetëm me dy parametra. Për faqen "login" menyja dhe butoni "Dil" fshihen. Fragmenti flash nuk shfaqet në faqet e gabimit, sepse aty Spring vendos vetë atributin "error" ("Not Found").
+- **Çka bëmë:** provuam së pari ta lexonim adresën e faqes me `springRequestContext.requestUri`, por Thymeleaf 3.1 e ndalon ("Accessing member 'requestUri' is forbidden"), prandaj kaluam te emri i template-it. Komentin në layout e bëmë koment Thymeleaf (`<!--/* */-->`) që të mos i dërgohet shfletuesit. Nuk krijuam controller.
+- **Si e verifikuam:** në një kopje lokale me feature/rooms dhe feature/reservations të bashkuara, ./mvnw spring-boot:run (porti 8081): /app/rooms, /app/rooms/1, /app/reservations, format new/edit kthejnë 200 me menynë, linkun aktiv të duhur dhe footer-in; /nuk-ekziston dhe /app/rooms/999 tregojnë 404-ën tonë (jo Whitelabel); fshirja e dhomës me rezervime tregon flash-in e kuq; forma bosh e rezervimit tregon gabimet në shqip me stilin .error.
+
+### 2026-11-17, Faqja 403 (nuk keni qasje), Muzlind
+
+- **Pyetja:** Dioni na tha që i del gabimi 403; hulumtoje dhe rregulloje.
+- **Përgjigjja:** Claude gjeti te PR #8 (PLAN.md) që 403 është i saktë kur `user` hap `/admin/...`, por pa faqe tonën del Whitelabel; plani e cakton `templates/error/403.html` te Muzlindi. E krijoi si 404-ën: me layout-in, "Nuk keni qasje në këtë faqe" dhe link te `/app/reservations`.
+- **Çka bëmë:** e pranuam. Nuk prekëm SecurityConfig-un dhe as butonat e ADMIN-it, sepse ato janë të Dionit në feature/login.
+- **Si e verifikuam:** në një kopje lokale (jashtë Git-it) shtuam përkohësisht spring-boot-starter-security dhe një SecurityConfig si te plani i Dionit. Si `user`: `/app/rooms` 200, `/admin/rooms/new` dhe POST te `/admin/reservations/1/delete` kthejnë 403 me faqen tonë (menyja, footer, pa Whitelabel); "Dil" me token-in CSRF të kthen te `/login?logout`. Si `admin`: `/admin/rooms/new` 200, `/nuk-ekziston` 404.
+
+### 2026-11-17, Dizajni i ri i faqeve, Muzlind
+
+- **Pyetja:** ndryshoje dizajnin: atraktiv dhe profesional, por jo si dizajnet e zakonshme me AI; pak ngjyra, font tjetër, layout tjetër.
+- **Përgjigjja:** Claude e ndërtoi dizajnin si "libri i regjistrimit në recepsion": menyja në një shirit majtas (indeks "01 Rezervimet / 02 Dhomat", data e sotme me `#temporals`, "Dil" poshtë), sfond letër krem, bojë e zezë dhe vetëm një ngjyrë (e kuqe e errët) për fshirjen, gabimet dhe linkun aktiv. Tre fonte nga Google Fonts: Libre Caslon Display (titujt), Libre Franklin (teksti), IBM Plex Mono (etiketat dhe numrat). Tabelat si faqe regjistri me vija të holla, fushat e formës vetëm me vijë poshtë, 404/403 me numrin e madh. Në celular shiriti bëhet shirit lart. Ndryshoi vetëm file-t e mia (layout.html, fragments.html, app.css, error/404.html, error/403.html); klasat që përdorin faqet e të tjerëve mbetën të njëjta.
+- **Çka bëmë:** e pranuam. Ngjyrat i vendosëm si variabla CSS (`--ink`, `--paper`, `--accent`) që të ndryshohen në një vend. Fontet vijnë nga interneti; pa internet faqja përdor Georgia/Arial/Consolas.
+- **Si e verifikuam:** ./mvnw spring-boot:run me main + feature/layout: /app/rooms, /app/rooms/1, /app/reservations, /app/reservations/new (edhe me gabimet e formës bosh) dhe /nuk-ekziston në 1366 px dhe 375 px; fontet ngarkohen (`document.fonts.check`); në celular faqja nuk rrëshqet anash (tabela rrëshqet brenda vetes).
+
+### 2026-11-17, Rishikimi i PR #4 (rezervimet) dhe testi i PR #5 + layout-it, Uvejs
+
+- **Pyetja:** rishikoje PR #4 të Xhemaledinit në vendin tim; pas rregullimit kontrolloje përsëri. Pastaj shpjegoje konfliktin te PR #5 i Dionit dhe kontrollo PR #5 bashkë me layout-in e Muzlindit.
+- **Përgjigjja:** Claude e nisi branch-in lokalisht (port 8082, PostgreSQL në Docker, layout i përkohshëm jashtë Git-it) dhe gjeti një gabim: `POST /app/reservations/new` me `id=3` e mbishkruante rezervimin 3, sepse `@ModelAttribute` lidh edhe `id`-në. Propozoi `reservation.setId(null)` te `create()` dhe shkroi review-n "Request changes"; pas rregullimit e provoi përsëri dhe shkroi aprovimin. Konfliktin te PR #5 e shpjegoi: Xhemaledini dhe Dioni e shtuan hyrjen në fund të AI-LOG.md në të njëjtin vend. Pastaj i testoi `main` + layout + dhomat bashkë.
+- **Çka bëmë:** i pranuam. Review-të i postuam nga llogaria ime pasi i lexova. Xhemaledini e shtoi `setId(null)`; Dioni e zgjodhi konfliktin duke i mbajtur të dyja hyrjet. Vërejtjet jo bllokuese (renditja e merge-it, butoni "Fshij" për USER-in) i lamë për layout-in dhe login-in.
+- **Si e verifikuam:** me curl dhe psql para dhe pas rregullimit: me `id=3` rreshti i "Driton Berisha" u mbishkrua para, por jo pas; forma bosh 6 gabime; `created_at` i pandryshuar pas ndryshimit; 404 dhe 405. Me layout-in: të gjitha faqet 200, menyja aktive saktë, 404 pa Whitelabel; dhomat: numri i dyfishtë, fshirja e dhomës me rezervime, `id=2` i futur s'e mbishkruan dhomën. Të dhënat e testit i kthyem si ishin.
+
+### 2026-11-17, Vendimet për login-in në PLAN.md, Uvejs
+
+- **Pyetja:** a janë te file-t .md të gjitha informatat që i duhen Dionit për login-in; pastaj: shtoji ato që mungojnë te PLAN.md.
+- **Përgjigjja:** Claude i krahasoi PLAN.md, SPEC.md dhe CLAUDE.md me kodin dhe gjeti 4 mungesa: fshehja e butonave të ADMIN-it për USER-in, faqja 403 në fazën 1, emrat e fjalëkalimeve në properties dhe kontrolli i `createdBy`. I shtoi te pika 4b, ia përditësoi Dionit promptin dhe "Gati kur".
+- **Çka bëmë:** i pranuam, por përdorimin e `thymeleaf-extras-springsecurity6` (`sec:authorize`) e lamë si propozim që e vendos grupi, sepse s'është në listën e starter-ave te CLAUDE.md. Hapëm PR #8.
+- **Si e verifikuam:** në pom-in e Spring Boot 4.1.1 kontrolluam që versioni i `thymeleaf-extras-springsecurity6` (3.1.5) menaxhohet vetë; me grep te template-t gjetëm saktë cilët butona shkojnë te `/admin/**`.
+
 ### 2026-11-17, Rregullimi pas rishikimit të PR #4, Xhemaledin
 
 - **Pyetja:** Uvejs e rishikoi PR #4 dhe kërkoi ndryshim: krijimi lejonte mbishkrimin e një rezervimi ekzistues kur kërkesa dërgon `id` (p.sh. `id=3` te `POST /app/reservations/new`). I kërkova Claude-it ta rregullojë; pastaj edhe t'i heqë komentet nga ReservationController.
