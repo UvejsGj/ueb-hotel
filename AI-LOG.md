@@ -41,3 +41,17 @@
 - **Përgjigjja:** Claude e ndërtoi dizajnin si "libri i regjistrimit në recepsion": menyja në një shirit majtas (indeks "01 Rezervimet / 02 Dhomat", data e sotme me `#temporals`, "Dil" poshtë), sfond letër krem, bojë e zezë dhe vetëm një ngjyrë (e kuqe e errët) për fshirjen, gabimet dhe linkun aktiv. Tre fonte nga Google Fonts: Libre Caslon Display (titujt), Libre Franklin (teksti), IBM Plex Mono (etiketat dhe numrat). Tabelat si faqe regjistri me vija të holla, fushat e formës vetëm me vijë poshtë, 404/403 me numrin e madh. Në celular shiriti bëhet shirit lart. Ndryshoi vetëm file-t e mia (layout.html, fragments.html, app.css, error/404.html, error/403.html); klasat që përdorin faqet e të tjerëve mbetën të njëjta.
 - **Çka bëmë:** e pranuam. Ngjyrat i vendosëm si variabla CSS (`--ink`, `--paper`, `--accent`) që të ndryshohen në një vend. Fontet vijnë nga interneti; pa internet faqja përdor Georgia/Arial/Consolas.
 - **Si e verifikuam:** ./mvnw spring-boot:run me main + feature/layout: /app/rooms, /app/rooms/1, /app/reservations, /app/reservations/new (edhe me gabimet e formës bosh) dhe /nuk-ekziston në 1366 px dhe 375 px; fontet ngarkohen (`document.fonts.check`); në celular faqja nuk rrëshqet anash (tabela rrëshqet brenda vetes).
+
+### 2026-11-17, Ngjyrat e dizajnit, Muzlind
+
+- **Pyetja:** dizajni ishte shumë i thjeshtë; shto disa ngjyra dhe bëje më interesant.
+- **Përgjigjja:** Claude shtoi një paletë të vogël: jeshil i errët (shiriti majtas, butonat, koka e tabelës), bronz (linku aktiv, vija nën titull, numrat e dhomave si etiketa çelësash, 404/403), e kuqe vere (fshirja, gabimet) dhe versionet e lehta të tyre për mesazhet flash. Shtoi emrin e seksionit mbi titull ("02 — Dhomat") te layout-i dhe shenjën ✦ te emri i hotelit. Forma e faqes (`main > form`) u bë kartelë e bardhë me vijë bronzi lart.
+- **Çka bëmë:** e pranuam. Ngjyrat janë të gjitha te `:root` si variabla, me koment për secilën. Klasat e faqeve të të tjerëve mbetën të njëjta.
+- **Si e verifikuam:** ./mvnw spring-boot:run: /app/rooms, /app/rooms/1, /app/reservations, forma bosh me gabimet, flash-i i kuq pas fshirjes së dhomës 101 (ka rezervime, s'u fshi) dhe /nuk-ekziston në 1366 px dhe 375 px; në celular faqja nuk rrëshqet anash.
+
+### 2026-11-17, Dizajni maksimalist (art deco), Muzlind
+
+- **Pyetja:** dizajni me ngjyra ende s'na pëlqente; bëje pak më maksimalist.
+- **Përgjigjja:** Claude e ktheu në stil art deco të një hoteli të madh: sfondi me pika (`radial-gradient`), shiriti jeshil me vija diagonale (`repeating-linear-gradient`) dhe kornizë të dyfishtë bronzi, emri "Hotel" në kornizë me ✦ ✦ ✦, titujt shumë të mëdhenj me hije (`text-shadow`) dhe vijë të dyfishtë, butonat dhe kutitë me hije të forta (`box-shadow`) që lëvizin kur kalon me mi, rreshtat e tabelës me radhë (`nth-child(even)`), numrat e dhomave si varëse çelësash, shirit portokalli për emrin e seksionit, mesazhet me ✓/✕, 404/403 me numër gjigant. U shtua një ngjyrë (portokalli i tokës) dhe një font dekorativ (Playfair Display italic).
+- **Çka bëmë:** e pranuam. Ndryshuan vetëm app.css, layout.html (fonti) dhe fragments.html ("— Recepsioni —", "Est. MMXXVI"); klasat e faqeve të të tjerëve mbetën të njëjta.
+- **Si e verifikuam:** ./mvnw spring-boot:run: /app/rooms, /app/rooms/1, forma bosh me gabimet, flash-i i kuq pas fshirjes së dhomës 101 (s'u fshi), /nuk-ekziston, në desktop dhe në 375 px pa rrëshqitje anash.
