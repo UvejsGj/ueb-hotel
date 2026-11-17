@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Dhoma</title>
+</head>
+<body>
+<main>
+    <h1 th:text="'Dhoma ' + ${room.number}">Dhoma 101</h1>
+
+    <table class="table">
+        <tr>
+            <th>Tipi</th>
+            <td th:text="${room.type}">SINGLE</td>
+        </tr>
+        <tr>
+            <th>Kati</th>
+            <td th:text="${room.floor}">1</td>
+        </tr>
+        <tr>
+            <th>Kapaciteti</th>
+            <td th:text="${room.capacity}">1</td>
+        </tr>
+        <tr>
+            <th>Çmimi për natë</th>
+            <td th:text="${#numbers.formatDecimal(room.pricePerNight, 1, 'POINT', 2, 'COMMA')} + ' €'">30,00 €</td>
+        </tr>
+    </table>
+
+    <p>
+        <a class="btn" th:href="@{/admin/rooms/{id}/edit(id=${room.id})}">Ndrysho</a>
+        <a th:href="@{/app/rooms}">Kthehu te dhomat</a>
+    </p>
+
+    <h2>Rezervimet e dhomës</h2>
+
+    <p th:if="${#lists.isEmpty(room.reservations)}">Nuk ka rezervime.</p>
+
+    <table class="table" th:unless="${#lists.isEmpty(room.reservations)}">
+        <thead>
+        <tr>
+            <th>Mysafiri</th>
+            <th>E-mail</th>
+            <th>Hyrja</th>
+            <th>Dalja</th>
+            <th>Mysafirë</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="res : ${room.reservations}">
+            <td th:text="${res.guestName}">Arben Hoxha</td>
+            <td th:text="${res.guestEmail}">arben@example.com</td>
+            <td th:text="${#temporals.format(res.checkIn, 'dd.MM.yyyy')}">03.12.2026</td>
+            <td th:text="${#temporals.format(res.checkOut, 'dd.MM.yyyy')}">06.12.2026</td>
+            <td th:text="${res.guests}">1</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
