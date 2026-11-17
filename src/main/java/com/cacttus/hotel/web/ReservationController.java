@@ -50,6 +50,8 @@ public class ReservationController {
                          BindingResult result,
                          Principal principal,
                          RedirectAttributes redirectAttributes) {
+        // Krijimi gjithmonë krijon rezervim të ri, edhe nëse kërkesa dërgon një id.
+        reservation.setId(null);
         if (result.hasErrors()) {
             return "reservations/form";
         }
