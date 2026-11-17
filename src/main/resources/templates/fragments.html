@@ -6,8 +6,9 @@
      active = 'reservations', 'rooms', 'login' ose '' -->
 <header th:fragment="header(active)" class="site-header">
     <a class="brand" th:href="@{/app/reservations}">
+        <span class="brand-mark">✦ ✦ ✦</span>
         <span class="brand-name">Hotel</span>
-        <span class="brand-sub">Recepsioni</span>
+        <span class="brand-sub">— Recepsioni —</span>
     </a>
 
     <p class="today" th:text="'Sot · ' + ${#temporals.format(#temporals.createToday(), 'dd.MM.yyyy')}">Sot · 17.11.2026</p>
@@ -24,6 +25,8 @@
     <form th:unless="${active == 'login'}" class="logout" method="post" th:action="@{/logout}">
         <button type="submit" class="logout-btn">Dil →</button>
     </form>
+
+    <p class="est">Est. MMXXVI</p>
 </header>
 
 <!-- Mesazhet pas veprimit (addFlashAttribute "message" / "error").
