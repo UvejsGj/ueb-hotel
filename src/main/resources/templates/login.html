@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <title>Hyrja</title>
+</head>
+<body>
+<main>
+    <h1>Hyrja</h1>
+
+    <p class="flash-error" th:if="${param.error}">Username ose fjalëkalimi i gabuar</p>
+    <p class="flash-success" th:if="${param.logout}">U çkyçe me sukses</p>
+
+    <form method="post" th:action="@{/login}">
+        <div class="form-row">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" autofocus>
+        </div>
+
+        <div class="form-row">
+            <label for="password">Fjalëkalimi</label>
+            <input type="password" id="password" name="password">
+        </div>
+
+        <div class="form-row">
+            <button type="submit" class="btn">Hyr</button>
+        </div>
+    </form>
+</main>
+</body>
+</html>
