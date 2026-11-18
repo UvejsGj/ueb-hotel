@@ -108,7 +108,7 @@
 ### 2026-11-17, Merge-i i PR #7 (layout) dhe konflikti te PR #8, Uvejs
 
 - **Pyetja:** kontrolloji PR-të e hapura dhe trajtoji siç duhet sipas PLAN.md: provoji, bëji merge ato që janë gati, zgjidh konfliktin e PR #8 dhe kërkoja review-n Muzlindit.
-- **Përgjigjja:** Claude e provoi PR #7 bashkë me `main` me PostgreSQL dhe e bëri merge pasi e aprovoi Dioni. Pastaj vuri re që Muzlindi kishte shtyrë dizajnin e ri një minutë para merge-it, pa provë dhe pa review, prandaj e provoi `main`-in edhe pas merge-it. Te `feature/entities` e bëri merge `main`-in, zgjodhi konfliktin te AI-LOG.md duke i mbajtur të gjitha hyrjet dhe i kërkoi review Muzlindit për PR #8.
+- **Përgjigjja:** Claude e provoi PR #7 bashkë me `main` me PostgreSQL dhe e bëri merge pasi e aprovoi Dioni. Pastaj vuri re që Muzlindi kishte shtyrë dizajnin e ri një minutë para merge-it, pa review-in e Dionit (e kishte provuar vetëm Muzlindi lokalisht), prandaj e provoi `main`-in edhe pas merge-it. Te `feature/entities` e bëri merge `main`-in, zgjodhi konfliktin te AI-LOG.md duke i mbajtur të gjitha hyrjet dhe i kërkoi review Muzlindit për PR #8.
 - **Çka bëmë:** i pranuam. Shënuam që dizajni i ri hyri pa rishikimin e Dionit, dhe që Google Fonts kërkojnë internet në demo.
 - **Si e verifikuam:** para dhe pas merge-it, me curl dhe në shfletues: të 7 faqet 200 me menynë aktive, 404 për `/nope` dhe `/app/rooms/999`, flash-i i kuq te fshirja e dhomës me rezervime, 6 gabime te forma bosh. Te AI-LOG.md kontrolluam që krahasuar me `main` s'u fshi asnjë rresht.
 
