@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="sq">
 <body>
 
-<!-- Header-i (shiriti majtas): emri i hotelit, data e sotme, menyja dhe butoni "Dil".
+<!-- Header-i (shiriti majtas): emri i hotelit, data e sotme, menyja, butoni i temës dhe "Dil".
      active = 'reservations', 'rooms', 'login' ose '' -->
 <header th:fragment="header(active)" class="site-header">
     <a class="brand" th:href="@{/app/reservations}">
-        <span class="brand-mark">✦ ✦ ✦</span>
+        <span class="brand-mark" aria-hidden="true">H</span>
         <span class="brand-name">Hotel</span>
-        <span class="brand-sub">— Recepsioni —</span>
+        <span class="brand-sub">Recepsioni</span>
     </a>
 
     <p class="today" th:text="'Sot · ' + ${#temporals.format(#temporals.createToday(), 'dd.MM.yyyy')}">Sot · 17.11.2026</p>
@@ -21,6 +21,13 @@
             <span class="nav-num">02</span> Dhomat
         </a>
     </nav>
+
+    <!-- Ndërron temën (e errët / e çelët). Kodi JavaScript është te layout.html.
+         Shfaqet vetëm njëri tekst; cilin e vendos app.css sipas temës. -->
+    <button type="button" id="theme-toggle" class="theme-toggle">
+        <span class="to-light">☀ Tema e çelët</span>
+        <span class="to-dark">☾ Tema e errët</span>
+    </button>
 
     <form th:unless="${active == 'login'}" class="logout" method="post" th:action="@{/logout}">
         <button type="submit" class="logout-btn">Dil →</button>
