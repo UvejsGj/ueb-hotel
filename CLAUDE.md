@@ -22,7 +22,7 @@ Ky file e lexon Claude i çdo anëtari para se të shkruajë kod. Katër veta pu
 ## Stack-u (i fiksuar, mos e ndrysho)
 
 - Java 25 (Temurin), Spring Boot 4.1, Maven me `mvnw`.
-- Starter-at: `spring-boot-starter-webmvc`, `spring-boot-starter-thymeleaf`, `spring-boot-starter-data-jpa`, `spring-boot-starter-validation`, `org.postgresql:postgresql` (runtime), Lombok. `spring-boot-starter-security` e shton Dion në `feature/login`.
+- Starter-at: `spring-boot-starter-webmvc`, `spring-boot-starter-thymeleaf`, `spring-boot-starter-data-jpa`, `spring-boot-starter-validation`, `org.postgresql:postgresql` (runtime), Lombok. `spring-boot-starter-security` e shton Dion në `feature/login`. `org.thymeleaf.extras:thymeleaf-extras-springsecurity6` (pa `<version>`, e menaxhon Spring Boot) për `sec:authorize` te template-t: grupi e ka pranuar më 18.11.
 - PostgreSQL 18 në Docker, porti **5433** në laptop.
 - **NUK** pranohen: React/Angular/Vue, aplikacion vetëm me REST dhe JWT, `javax.*` (përdor `jakarta.*`), Spring Boot 3. Faqet vijnë nga Thymeleaf.
 

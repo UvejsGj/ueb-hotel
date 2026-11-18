@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
     <title>Rezervimet</title>
@@ -34,7 +35,7 @@
             <td th:text="${res.guests}">1</td>
             <td>
                 <a class="btn" th:href="@{/app/reservations/{id}/edit(id=${res.id})}">Ndrysho</a>
-                <form method="post" th:action="@{/admin/reservations/{id}/delete(id=${res.id})}">
+                <form sec:authorize="hasRole('ADMIN')" method="post" th:action="@{/admin/reservations/{id}/delete(id=${res.id})}">
                     <button type="submit" class="btn btn-danger">Fshij</button>
                 </form>
             </td>

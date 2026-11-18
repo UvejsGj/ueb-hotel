@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
     <title>Dhoma</title>
@@ -28,7 +29,7 @@
     </table>
 
     <p>
-        <a class="btn" th:href="@{/admin/rooms/{id}/edit(id=${room.id})}">Ndrysho</a>
+        <a sec:authorize="hasRole('ADMIN')" class="btn" th:href="@{/admin/rooms/{id}/edit(id=${room.id})}">Ndrysho</a>
         <a th:href="@{/app/rooms}">Kthehu te dhomat</a>
     </p>
 
