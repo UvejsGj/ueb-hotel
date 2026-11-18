@@ -206,6 +206,39 @@ Në fund jepmë draftin e AI-LOG.md.
 
 ---
 
+## Gjendja më 18.11 dhe çka mbetet
+
+Në `main` janë: entitetet (#3), rezervimet (#4), dhomat (#5, #12), layout-i me 404 dhe 403 (#7, #10), login-i (#11) dhe 17 hyrje te AI-LOG.md. Nuk ka PR të hapur.
+
+**Hapur:** `sec:authorize` (pika 4b, "Para se të fillojë Dioni", pika 1) ende s'është vendosur. Vendoseni në grup **sot, e mërkurë 18.11**.
+
+### Uvejs (lideri)
+- [ ] Sot: mbledh vendimin e grupit për `sec:authorize` dhe shkruaje në grup.
+- [ ] `git checkout main && git pull`; mos punoni më mbi `feature/entities`.
+- [ ] Pasi ta aprovojë Xhemaledini, bëje merge PR-in e Dionit për hapin 6 (nëse pranohet).
+- [ ] E diel 22.11, para 20:00: dorëzimi.
+- [ ] Mbrojtja: entitetet (`@ManyToOne`/`@OneToMany`, pse `mappedBy` është te Room, `@AssertTrue`, `@PrePersist`, `updatable = false`), SeedData, dhe `ReservationController` i Xhemaledinit (gabimi me `id=3` dhe pse e rregullon `setId(null)`).
+
+### Muzlind
+- [ ] Nëse pranohet `sec:authorize`: shtoje `thymeleaf-extras-springsecurity6` te lista e starter-ave në CLAUDE.md.
+- [ ] Deri të shtunën: SPEC.md përputhet me kodin në `main` (fushat, URL-të, qasja, faqja 403, trim-i i numrit të dhomës, përdoruesit `user`/`admin`).
+- [ ] AI-LOG.md: secili ka hyrjet e veta, pa shenja konflikti.
+- [ ] Para demos: hape faqen një herë me internet, që Google Fonts të ruhen në cache.
+- [ ] Mbrojtja: `layout.html` (si i merr `title` dhe `main` nga faqja, `th:replace` vs `th:insert`, `#execInfo.processedTemplateName` për linkun aktiv) dhe PR-të e Uvejsit.
+
+### Xhemaledin
+- [ ] Nëse pranohet `sec:authorize`: rishiko PR-in e Dionit për hapin 6; te `reservations/list.html` (file yt) duhet të ndryshojë vetëm butoni "Fshij".
+- [ ] Opsionale: te hyrja jote e AI-LOG, "5 komente" → "4 komente".
+- [ ] Mbrojtja: `ReservationController` (GET → POST → redirect, pse `BindingResult` vjen menjëherë pas `@Valid`, pse `setId(null)` te `create()`, pse `createdAt` s'ndryshon te ndryshimi) dhe `RoomController` i Dionit.
+
+### Dion
+- [ ] Nëse pranohet `sec:authorize`, deri të premten 20.11: PR i vogël nga `main` me hapin 6 të pikës 4b. Para PR-it `git pull origin main`, që të mos ketë konflikt te AI-LOG.md.
+- [ ] Shiko dizajnin e ri të Muzlindit (#7, #10): hyri në `main` pa review-in tënd.
+- [ ] E shtunë: provoje `main`-in me PostgreSQL në Docker (deri tani e ke provuar me H2).
+- [ ] Mbrojtja: `SecurityConfig` (rrjedha e login-it, BCrypt, pse duhet CSRF, `/admin/**` dhe `/app/**`), `RoomController` (`left join fetch`, `existsByNumber`, `trim()`) dhe layout-i i Muzlindit.
+
+Në mbrojtje secili e shpjegon kodin e vet dhe kodin e atij që e ka rishikuar (tabela "Rishikimi i PR-ve" më sipër).
+
 ## 5. Të gjithë: e shtunë 21.11
 
 - [ ] Klon i pastër i `main` në një laptop: `docker start hotel-db`, `./mvnw spring-boot:run`, gjithë rrjedha punon (login → dhoma → rezervim → ndryshim → fshirje → logout).
@@ -217,7 +250,9 @@ Në fund jepmë draftin e AI-LOG.md.
 
 ## 6. Demo, e hënë 23.11
 
-Secili flet për pjesën e vet (rreth 1 minutë): Uvejs spec-in, entitetet dhe tabelat në PostgreSQL; Muzlind layout-in dhe 404-ën; Xhemaledin rezervimet me validimin; Dion dhomat dhe login-in.
+Secili flet për pjesën e vet (rreth 1 minutë): Uvejs spec-in, entitetet dhe tabelat në PostgreSQL; Muzlind layout-in, 404-ën dhe 403-ën; Xhemaledin rezervimet me validimin; Dion dhomat dhe login-in.
+
+Për Uvejsin, në psql (`docker exec -it hotel-db psql -U hotel`): `select * from room;`, `\d reservation` (kolona `room_id` me foreign key) dhe `select guest_name, created_by from reservation;`.
 
 ## Nëse Claude-t ndeshen
 
