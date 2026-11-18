@@ -91,7 +91,7 @@ Fshirja e një dhome që ka rezervime nuk lejohet: lista tregon mesazhin "Dhoma 
 | `/access-denied` | GET | access-denied.html (faza 2) | të gjithë |
 | `/api/rooms/available` | GET | JSON (faza 2) | USER, ADMIN (i kyçur) |
 
-Çdo adresë që s'ekziston tregon `error/404.html`. Të gjitha faqet përdorin `layout.html` dhe `fragments.html` (header me menynë, footer).
+Çdo adresë që s'ekziston tregon `error/404.html`. Kush s'ka qasje (p.sh. USER te `/admin/**`) sheh `error/403.html` në fazën 1 (në fazën 2 `/access-denied`). Të gjitha faqet përdorin `layout.html` dhe `fragments.html` (header me menynë, footer).
 
 ## 6. Custom validator (faza 2)
 
@@ -125,7 +125,7 @@ E thërret `reservations/form.html` me `fetch` sa herë që ndryshojnë datat os
 | Kush | Çka |
 |---|---|
 | Uvejs Gjelaj (lideri) | projekti (start.spring.io, Maven, Java 25, Boot 4.1), PostgreSQL `hotel-db` në Docker në portin 5433, `application-dev.properties`, `Room` + `Reservation` + relacioni, repository-t, `SeedData` |
-| Muzlind Matoshi | `layout.html`, `fragments.html`, `app.css`, faqja 404; koordinon `SPEC.md`, rishikimin e AI-së dhe `AI-LOG.md` |
+| Muzlind Matoshi | `layout.html`, `fragments.html`, `app.css`, faqet 404 dhe 403; koordinon `SPEC.md`, rishikimin e AI-së dhe `AI-LOG.md` |
 | Xhemaledin Beluli | CRUD i rezervimeve: controller, lista, forma me `<select>` të dhomave, validimi, gabimet pranë fushës |
 | Dion Kastrati | CRUD i dhomave dhe faqja e dhomës me rezervimet; login-i me përdorues in-memory, faqja juaj e login-it, logout |
 
