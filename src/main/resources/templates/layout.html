@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:replace="${title}">Hotel</title>
-    <!-- Tri fonte nga Google Fonts: Libre Caslon Display (titujt), Libre Franklin (teksti), IBM Plex Mono (numrat, etiketat) -->
+    <!--/* Katër fonte nga Google Fonts: Libre Caslon Display (titujt), Playfair Display italic (dekor),
+           Libre Franklin (teksti), IBM Plex Mono (numrat, etiketat) */-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&family=Libre+Franklin:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&family=Libre+Franklin:wght@400;500;600&family=Playfair+Display:ital,wght@1,400;1,600&display=swap">
     <link rel="stylesheet" th:href="@{/css/app.css}">
 </head>
 <!--/* page = emri i template-it të faqes, p.sh. "rooms/list" ose "reservations/form".
@@ -20,6 +21,10 @@
 <header th:replace="~{fragments :: header(${active})}"></header>
 
 <div class="container">
+    <!--/* Emri i seksionit mbi titullin e faqes, p.sh. "02 — Dhomat" */-->
+    <p class="kicker" th:if="${active == 'reservations'}">01 — Rezervimet</p>
+    <p class="kicker" th:if="${active == 'rooms'}">02 — Dhomat</p>
+
     <div th:replace="~{fragments :: flash}"></div>
 
     <main th:replace="${content}"></main>
