@@ -18,6 +18,8 @@ Aplikacioni është vetëm për stafin e hotelit, jo për mysafirët.
 
 Pa llogari: vetëm faqja e login-it.
 
+USER-i nuk i sheh butonat e ADMIN-it ("Fshij" te rezervimet; "Dhomë e re", "Ndrysho" dhe "Fshij" te dhomat); "Ndrysho" te rezervimet i mbetet. Nëse e hap adresën `/admin/...` me dorë, sheh faqen 403.
+
 Faza 1: përdoruesit janë in-memory: `user` (ROLE_USER) dhe `admin` (ROLE_ADMIN).
 
 Faza 2: përdoruesit ruhen në databazë (entiteti `AppUser`), fjalëkalimet me BCrypt. `/admin/**` vetëm ADMIN, `/app/**` USER dhe ADMIN; kush s'ka qasje e sheh faqen `/access-denied`.
