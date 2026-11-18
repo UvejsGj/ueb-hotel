@@ -104,3 +104,17 @@
 - **Përgjigjja:** Claude shtoi te create() dhe update(), para kontrollit të numrit unik, `if (room.getNumber() != null) { room.setNumber(room.getNumber().trim()); }`, ashtu si e sugjeroi Xhemaledini.
 - **Çka bëmë:** e pranuam. Kontrolli për null duhet, sepse pa të `trim()` hedh NullPointerException kur fusha mungon në kërkesë (atë rast e kap @NotBlank). Sugjerimin për `type=KING` (gabim në anglisht) e lamë për fazën 2, sepse nga faqja normale s'mund të ndodhë.
 - **Si e verifikuam:** ./mvnw clean compile pa gabime; me H2 dhe curl: " 101 " te krijimi → "Ky numër dhome ekziston."; "  601  " ruhet si "601" dhe pastaj "601 " → "Ky numër dhome ekziston."; ndryshimi i dhomës 101 në " 102 " → gabim, në " 101 " (numri i vet) → ruhet; vetëm hapësira → "Shkruani numrin e dhomës"; lista tregon numrat pa hapësira; forma me gabim e rishfaq numrin e pastruar.
+
+### 2026-11-17, Merge-i i PR #7 (layout) dhe konflikti te PR #8, Uvejs
+
+- **Pyetja:** kontrolloji PR-të e hapura dhe trajtoji siç duhet sipas PLAN.md: provoji, bëji merge ato që janë gati, zgjidh konfliktin e PR #8 dhe kërkoja review-n Muzlindit.
+- **Përgjigjja:** Claude e provoi PR #7 bashkë me `main` me PostgreSQL dhe e bëri merge pasi e aprovoi Dioni. Pastaj vuri re që Muzlindi kishte shtyrë dizajnin e ri një minutë para merge-it, pa provë dhe pa review, prandaj e provoi `main`-in edhe pas merge-it. Te `feature/entities` e bëri merge `main`-in, zgjodhi konfliktin te AI-LOG.md duke i mbajtur të gjitha hyrjet dhe i kërkoi review Muzlindit për PR #8.
+- **Çka bëmë:** i pranuam. Shënuam që dizajni i ri hyri pa rishikimin e Dionit, dhe që Google Fonts kërkojnë internet në demo.
+- **Si e verifikuam:** para dhe pas merge-it, me curl dhe në shfletues: të 7 faqet 200 me menynë aktive, 404 për `/nope` dhe `/app/rooms/999`, flash-i i kuq te fshirja e dhomës me rezervime, 6 gabime te forma bosh. Te AI-LOG.md kontrolluam që krahasuar me `main` s'u fshi asnjë rresht.
+
+### 2026-11-18, Merge-t e PR #9, #11 (login) dhe #12 (trim), Uvejs
+
+- **Pyetja:** kontrolloji dhe bëji merge PR-të e hapura: #9 i Xhemaledinit (hyrjet e AI-LOG), pastaj #11 (login) dhe #12 (trim i numrit të dhomës) të Dionit, që kishin konflikt me `main`.
+- **Përgjigjja:** Claude e kontrolloi #9 (vetëm AI-LOG.md, commit-i i aprovuar nga Muzlindi ishte ende i fundit) dhe e bëri merge. #11 dhe #12 i provoi bashkë me `main` me PostgreSQL. Konflikti te të dyja ishte vetëm te AI-LOG.md; e zgjodhi në branch-et e Dionit nga llogaria ime (`Merge main into feature/login` dhe `... feature/rooms`), i mbajti të gjitha hyrjet dhe i bëri merge me radhë: #11, pastaj #12.
+- **Çka bëmë:** i pranuam. Konfliktet i zgjodhëm ne në vend të Dionit që login-i të hynte para afatit të së premtes. Te #9 hyrja thotë "5 komente", por ishin 4; e lamë si vërejtje të vogël.
+- **Si e verifikuam:** me curl dhe psql para merge-it: pa login çdo faqe të çon te `/login`; faqja e login-it pa meny, me `_csrf` dhe me mesazhet `?error`/`?logout`; `user` merr 200 te `/app/**`, 403 me faqen tonë te `/admin/rooms/new`, 403 për fshirjen dhe për POST pa CSRF; rezervimi i `user`-it ruhet me `created_by = user`; `admin` hyn te `/admin/**`; `" 101 "` jep "Ky numër dhome ekziston.", `"  701  "` ruhet si `701`; logout të kthen te `/login?logout`. Pas merge-it: `main` ka 15 hyrje te AI-LOG pa shenja konflikti. Të dhënat e provës i fshimë (6 dhoma, 4 rezervime).
