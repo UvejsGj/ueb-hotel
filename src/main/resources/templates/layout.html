@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:replace="${title}">Hotel</title>
-    <!--/* Katër fonte nga Google Fonts: Libre Caslon Display (titujt), Playfair Display italic (dekor),
-           Libre Franklin (teksti), IBM Plex Mono (numrat, etiketat) */-->
+    <!--/* Dy fonte nga Google Fonts: Bricolage Grotesque (titujt) dhe Manrope (teksti) */-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Libre+Caslon+Display&family=Libre+Franklin:wght@400;500;600&family=Playfair+Display:ital,wght@1,400;1,600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Manrope:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" th:href="@{/css/app.css}">
+    <!--/* Tema: e errëta është default. Nëse përdoruesi ka zgjedhur më herët temën e çelët
+           (ruhet në localStorage të shfletuesit), e vendosim para se të vizatohet faqja,
+           që të mos "ndriçojë" faqja e errët për një çast. */-->
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
 </head>
 <!--/* page = emri i template-it të faqes, p.sh. "rooms/list" ose "reservations/form".
        Prej tij dimë cili link i menysë është aktiv. (Ky koment nuk i dërgohet shfletuesit.) */-->
@@ -31,6 +38,20 @@
 </div>
 
 <footer th:replace="~{fragments :: footer}"></footer>
+
+<!--/* Butoni i temës: klikimi e ndërron data-theme te <html> dhe e ruan zgjedhjen. */-->
+<script>
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+        const html = document.documentElement;
+        if (html.getAttribute('data-theme') === 'light') {
+            html.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+</script>
 
 </body>
 </html>
