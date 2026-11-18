@@ -54,6 +54,9 @@ public class RoomController {
                          BindingResult result,
                          RedirectAttributes redirectAttributes) {
         room.setId(null);
+        if (room.getNumber() != null) {
+            room.setNumber(room.getNumber().trim());
+        }
         if (roomRepository.existsByNumber(room.getNumber())) {
             result.rejectValue("number", "duplicate", "Ky numër dhome ekziston.");
         }
@@ -82,6 +85,9 @@ public class RoomController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         room.setId(id);
+        if (room.getNumber() != null) {
+            room.setNumber(room.getNumber().trim());
+        }
         if (roomRepository.existsByNumberAndIdNot(room.getNumber(), id)) {
             result.rejectValue("number", "duplicate", "Ky numër dhome ekziston.");
         }
