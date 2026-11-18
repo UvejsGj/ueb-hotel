@@ -1,17 +1,26 @@
 /* app.css: stili i përbashkët i ueb-hotel (pa framework). Pronari: Muzlind
-   Ideja: si libri i regjistrimit në recepsion. Letër e bardhë-krem, bojë e zezë
-   dhe vetëm një ngjyrë (e kuqe e errët) për veprimet e rrezikshme dhe linkun aktiv. */
+   Ideja: hotel i madh i viteve '20 (art deco). Shumë ngjyrë, motive, korniza të dyfishta,
+   hije të forta dhe shkronja të mëdha, por gjithçka e rregullt dhe e lexueshme. */
 
 /* ---------- Ngjyrat dhe fontet (variabla CSS) ---------- */
 :root {
-    --paper: #f4f1ea;       /* sfondi */
-    --paper-dark: #ebe6da;  /* rreshti nën mi, kutitë */
-    --ink: #1c1b19;         /* teksti dhe vijat kryesore */
-    --muted: #6f6a60;       /* teksti dytësor */
-    --rule: #d6cfbf;        /* vijat e holla */
-    --accent: #8a2a1f;      /* e vetmja ngjyrë: fshirja, gabimet, linku aktiv */
+    --paper: #f6efe0;        /* sfondi i faqes */
+    --card: #fffaf0;         /* kutitë */
+    --ink: #1d211f;          /* teksti */
+    --muted: #6b665a;        /* teksti dytësor */
+    --rule: #dccfb4;         /* vijat e holla */
+
+    --forest: #183a33;       /* jeshil i errët: shiriti, butonat, koka e tabelës */
+    --forest-2: #24524a;     /* jeshil më i çelët: rreshtat e motivit */
+    --forest-soft: #dfe9e2;  /* jeshil i lehtë: mesazhi i suksesit */
+    --brass: #c4953f;        /* bronz: kornizat, detajet, hijet */
+    --brass-soft: #f3e3bf;   /* bronz i lehtë: etiketat e dhomave */
+    --terracotta: #c4613d;   /* portokalli i tokës: shiriti i seksionit */
+    --wine: #8f2b2b;         /* e kuqe vere: fshirja, gabimet */
+    --wine-soft: #f6dcd6;    /* e kuqe e lehtë: mesazhi i gabimit */
 
     --font-title: "Libre Caslon Display", Georgia, serif;
+    --font-fancy: "Playfair Display", Georgia, serif;
     --font-text: "Libre Franklin", "Helvetica Neue", Arial, sans-serif;
     --font-mono: "IBM Plex Mono", Consolas, monospace;
 }
@@ -21,50 +30,63 @@
     box-sizing: border-box;
 }
 
-/* Faqja ndahet në dy kolona: shiriti majtas (header) dhe përmbajtja djathtas */
+/* Faqja ndahet në dy kolona: shiriti majtas (header) dhe përmbajtja djathtas.
+   Sfondi ka pika të vogla (motiv) të bëra me radial-gradient. */
 body {
     margin: 0;
     min-height: 100vh;
     display: grid;
-    grid-template-columns: 17rem 1fr;
+    grid-template-columns: 19rem 1fr;
     grid-template-rows: 1fr auto;
-    background: var(--paper);
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(24, 58, 51, 0.12) 1px, transparent 1px);
+    background-size: 18px 18px;
     color: var(--ink);
     font-family: var(--font-text);
     font-size: 16px;
     line-height: 1.55;
 }
 
-h1,
-h2 {
-    font-family: var(--font-title);
-    font-weight: 400;
-    line-height: 1.1;
-}
-
+/* Titulli i faqes: shumë i madh, me hije bronzi dhe vijë të dyfishtë poshtë */
 h1 {
-    margin: 0 0 2rem;
-    padding-bottom: 1rem;
-    font-size: 3.2rem;
-    border-bottom: 1px solid var(--ink);
+    margin: 0 0 2.2rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 6px double var(--brass);
+    color: var(--forest);
+    font-family: var(--font-title);
+    font-size: 4.6rem;
+    font-weight: 400;
+    line-height: 1;
+    text-shadow: 4px 4px 0 var(--brass-soft);
 }
 
 h2 {
-    margin: 3rem 0 1rem;
-    font-size: 1.9rem;
+    margin: 3.5rem 0 1.2rem;
+    color: var(--terracotta);
+    font-family: var(--font-fancy);
+    font-size: 2.2rem;
+    font-style: italic;
+    font-weight: 600;
+}
+
+h2::before {
+    content: "✦ ";
+    color: var(--brass);
 }
 
 a {
-    color: var(--ink);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    color: var(--forest);
+    text-decoration-thickness: 2px;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 4px;
 }
 
 a:hover {
-    color: var(--accent);
+    color: var(--terracotta);
 }
 
 /* ---------- Shiriti majtas (header) ---------- */
+/* Sfondi jeshil me vija diagonale (motiv art deco) të bëra me repeating-linear-gradient */
 .site-header {
     grid-row: 1 / 3;              /* zë të dy rreshtat e kolonës së parë */
     position: sticky;             /* qëndron në vend kur bën scroll */
@@ -72,211 +94,311 @@ a:hover {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 2.5rem 2rem;
-    border-right: 1px solid var(--ink);
+    padding: 2.5rem 2rem 1.5rem;
+    background-color: var(--forest);
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(196, 149, 63, 0.09) 0 2px,
+        transparent 2px 16px
+    );
+    color: var(--paper);
+    border-right: 8px double var(--brass);
 }
 
 .brand {
     display: block;
+    padding: 1.4rem 1rem 1.2rem;
+    border: 3px double var(--brass);
+    color: var(--paper);
+    text-align: center;
     text-decoration: none;
+}
+
+.brand:hover {
+    color: var(--paper);
+}
+
+.brand-mark {
+    display: block;
+    color: var(--brass);
+    font-size: 0.9rem;
+    letter-spacing: 0.5em;
 }
 
 .brand-name {
     display: block;
+    margin: 0.3rem 0;
     font-family: var(--font-title);
-    font-size: 3rem;
+    font-size: 4rem;
     line-height: 1;
-}
-
-.brand-sub,
-.today {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
+    text-shadow: 3px 3px 0 var(--forest-2);
 }
 
 .brand-sub {
     display: block;
-    margin-top: 0.4rem;
+    color: var(--brass);
+    font-family: var(--font-fancy);
+    font-size: 1.1rem;
+    font-style: italic;
 }
 
 .today {
-    margin: 2rem 0 0;
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--rule);
+    margin: 1.5rem 0 0;
+    padding: 0.5rem;
+    background: var(--brass);
+    color: var(--forest);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-/* Menyja si indeks i librit: 01 Rezervimet, 02 Dhomat */
+/* Menyja: numri në një katror bronzi dhe emri me shkronja të pjerrëta */
 nav {
     display: flex;
     flex-direction: column;
-    margin-top: 3rem;
+    gap: 0.6rem;
+    margin-top: 2.5rem;
 }
 
 nav a {
     display: flex;
-    align-items: baseline;
-    gap: 0.9rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--rule);
-    color: var(--muted);
-    font-size: 1.05rem;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid transparent;
+    color: rgba(246, 239, 224, 0.75);
+    font-family: var(--font-fancy);
+    font-size: 1.5rem;
+    font-style: italic;
     text-decoration: none;
 }
 
 nav a:hover {
-    color: var(--ink);
+    color: var(--paper);
+    border-color: rgba(196, 149, 63, 0.5);
 }
 
+/* Linku i faqes ku je: kuti krem me hije bronzi */
 nav a.active {
-    color: var(--ink);
-    font-weight: 600;
+    background: var(--paper);
+    color: var(--forest);
+    box-shadow: 5px 5px 0 var(--brass);
 }
 
 .nav-num {
+    display: inline-block;
+    min-width: 2.2rem;
+    padding: 0.2rem 0;
+    border: 1px solid var(--brass);
+    color: var(--brass);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 400;
+    font-size: 0.8rem;
+    font-style: normal;
+    text-align: center;
 }
 
 nav a.active .nav-num {
-    color: var(--accent);
+    background: var(--forest);
+    border-color: var(--forest);
+    color: var(--brass);
 }
 
-/* "Dil" shkon në fund të shiritit */
+/* "Dil" dhe "Est." shkojnë në fund të shiritit */
 .logout {
     margin-top: auto;
 }
 
 .logout-btn {
-    padding: 0;
-    border: none;
+    width: 100%;
+    padding: 0.7rem;
+    border: 2px solid var(--brass);
     background: none;
-    color: var(--muted);
+    color: var(--brass);
     font-family: var(--font-mono);
     font-size: 0.8rem;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     cursor: pointer;
 }
 
 .logout-btn:hover {
-    color: var(--accent);
+    background: var(--brass);
+    color: var(--forest);
+}
+
+.est {
+    margin: 1rem 0 0;
+    color: rgba(196, 149, 63, 0.7);
+    font-family: var(--font-fancy);
+    font-style: italic;
+    text-align: center;
 }
 
 /* ---------- Përmbajtja dhe footer-i ---------- */
 .container {
     width: 100%;
     min-width: 0;            /* pa këtë, një tabelë e gjerë e zgjeron gjithë kolonën */
-    max-width: 68rem;
-    padding: 3.5rem 4rem 2rem;
+    max-width: 74rem;
+    padding: 3rem 4rem 3rem;
+}
+
+/* Emri i seksionit mbi titull si shirit portokalli, p.sh. "02 — Dhomat" */
+.kicker {
+    display: inline-block;
+    margin: 0 0 1.2rem;
+    padding: 0.35rem 0.9rem;
+    background: var(--terracotta);
+    color: var(--card);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0 var(--forest);
 }
 
 .site-footer {
     grid-column: 2;
-    padding: 1.2rem 4rem;
-    border-top: 1px solid var(--rule);
-    color: var(--muted);
+    padding: 1.1rem 4rem;
+    background: var(--forest);
+    border-top: 4px double var(--brass);
+    color: var(--brass);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
 }
 
-/* ---------- Butonat ---------- */
+/* ---------- Butonat (me hije të fortë që lëviz kur kalon me mi) ---------- */
 .btn {
     display: inline-block;
-    padding: 0.6rem 1.1rem;
-    border: 1px solid var(--ink);
-    background: var(--ink);
+    padding: 0.75rem 1.3rem;
+    border: 2px solid var(--forest);
+    background: var(--forest);
     color: var(--paper);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     text-decoration: none;
+    box-shadow: 4px 4px 0 var(--brass);
     cursor: pointer;
 }
 
 .btn:hover {
-    background: transparent;
-    color: var(--ink);
+    color: var(--paper);
+    box-shadow: 1px 1px 0 var(--brass);
+    transform: translate(3px, 3px);
 }
 
 /* Linku pas butonit (p.sh. "Anulo", "Kthehu te dhomat") pak më larg */
 .btn + a {
-    margin-left: 1.2rem;
+    margin-left: 1.5rem;
 }
 
 .btn-danger {
-    border-color: var(--accent);
-    background: transparent;
-    color: var(--accent);
+    border-color: var(--wine);
+    background: var(--wine);
+    box-shadow: 4px 4px 0 var(--ink);
 }
 
 .btn-danger:hover {
-    background: var(--accent);
-    color: var(--paper);
+    box-shadow: 1px 1px 0 var(--ink);
 }
 
-/* ---------- Mesazhet (flash) ---------- */
+/* ---------- Mesazhet (flash) me shenjë para tekstit ---------- */
 .flash-success,
 .flash-error {
     margin: 0 0 2rem;
-    padding: 0.8rem 1rem;
-    border-left: 3px solid var(--ink);
-    background: var(--paper-dark);
+    padding: 1rem 1.2rem;
+    border: 2px solid var(--forest);
+    background: var(--forest-soft);
+    color: var(--forest);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 5px 5px 0 var(--forest);
+}
+
+.flash-success::before {
+    content: "✓  ";
 }
 
 .flash-error {
-    border-left-color: var(--accent);
-    color: var(--accent);
+    border-color: var(--wine);
+    background: var(--wine-soft);
+    color: var(--wine);
+    box-shadow: 5px 5px 0 var(--wine);
 }
 
-/* ---------- Tabelat (si faqja e regjistrit) ---------- */
+.flash-error::before {
+    content: "✕  ";
+}
+
+/* ---------- Tabelat ---------- */
 .table {
     width: 100%;
+    margin-bottom: 1.8rem;     /* hapësirë që hija të mos prekë butonin poshtë */
     border-collapse: collapse;
-    border-top: 2px solid var(--ink);
+    background: var(--card);
+    border: 3px double var(--forest);
+    box-shadow: 8px 8px 0 var(--brass);
     font-variant-numeric: tabular-nums;   /* numrat me gjerësi të njëjtë, rreshtohen bukur */
 }
 
 .table th,
 .table td {
-    padding: 0.85rem 0.9rem;
+    padding: 0.9rem 1rem;
     text-align: left;
     vertical-align: middle;
     border-bottom: 1px solid var(--rule);
 }
 
-/* Titujt e kolonave dhe etiketat (p.sh. "Kati" te faqja e dhomës) */
+/* Koka e tabelës: jeshile me shkronja bronzi */
 .table th {
-    color: var(--muted);
+    background: var(--forest);
+    color: var(--brass);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.72rem;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
-.table thead th {
-    border-bottom: 1px solid var(--ink);
+/* Faqja e dhomës: etiketat majtas në kolonën jeshile */
+.table tbody th {
+    width: 14rem;
+    border-bottom-color: var(--forest-2);
 }
 
-.table tbody tr:hover {
-    background: var(--paper-dark);
+/* Rreshtat me radhë: njëri krem, tjetri bronz shumë i lehtë */
+.table tbody tr:nth-child(even) td {
+    background: #fbf1dc;
 }
 
-/* Linqet në tabelë (numri i dhomës) me font mono, si etiketa e çelësit */
+.table tbody tr:hover td {
+    background: var(--brass-soft);
+}
+
+/* Numri i dhomës në tabelë si etiketa e çelësit (varëse) */
 .table td a {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border: 2px solid var(--brass);
+    border-radius: 0 0.8rem 0.8rem 0;
+    background: var(--brass-soft);
+    color: var(--forest);
     font-family: var(--font-mono);
     font-weight: 500;
     text-decoration: none;
-    border-bottom: 1px solid var(--ink);
+}
+
+.table td a:hover {
+    background: var(--brass);
+    color: var(--card);
 }
 
 /* Kolona e fundit (butonat) në të djathtë */
@@ -285,92 +407,109 @@ nav a.active .nav-num {
     white-space: nowrap;
 }
 
-/* Butonat brenda tabelës më të vegjël dhe vetëm me vijë */
+/* Butonat brenda tabelës më të vegjël, me hije të vogël */
 .table .btn {
-    padding: 0.3rem 0.7rem;
+    padding: 0.35rem 0.75rem;
     font-size: 0.68rem;
-    background: transparent;
-    color: var(--ink);
-}
-
-.table .btn:hover {
-    background: var(--ink);
-    color: var(--paper);
+    box-shadow: 2px 2px 0 var(--brass);
 }
 
 .table .btn-danger {
-    border-color: var(--accent);
-    color: var(--accent);
+    box-shadow: 2px 2px 0 var(--ink);
 }
 
-.table .btn-danger:hover {
-    background: var(--accent);
+/* "Ndrysho" në tabelë (është link): rikthejmë stilin e butonit, jo të etiketës */
+.table a.btn {
+    border: 2px solid var(--forest);
+    border-radius: 0;
+    background: var(--forest);
+    color: var(--paper);
+}
+
+.table a.btn:hover {
+    background: var(--forest);
     color: var(--paper);
 }
 
 /* Forma e fshirjes qëndron në të njëjtin rresht me "Ndrysho" */
 td form {
     display: inline;
+    margin-left: 0.4rem;
 }
 
 /* ---------- Format ---------- */
-form .form-row {
-    max-width: 30rem;
+/* Forma e faqes (jo format e fshirjes në tabelë) si një kartelë me kornizë të dyfishtë */
+main > form {
+    max-width: 40rem;
+    padding: 2.2rem 2.4rem 1.2rem;
+    background: var(--card);
+    border: 4px double var(--forest);
+    box-shadow: 10px 10px 0 var(--terracotta);
+}
+
+.form-row {
     margin-bottom: 1.6rem;
 }
 
 .form-row label {
     display: block;
-    margin-bottom: 0.2rem;
-    color: var(--muted);
+    margin-bottom: 0.3rem;
+    color: var(--terracotta);
     font-family: var(--font-mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
-/* Fushat vetëm me vijë poshtë, si rreshti në libër */
 .form-row input,
 .form-row select {
     width: 100%;
-    padding: 0.45rem 0;
-    border: none;
-    border-bottom: 1px solid var(--ink);
+    padding: 0.6rem 0.7rem;
+    border: 2px solid var(--forest);
     border-radius: 0;
-    background: transparent;
+    background: var(--paper);
     color: var(--ink);
     font-family: var(--font-text);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
 }
 
 .form-row input:focus,
 .form-row select:focus {
     outline: none;
-    border-bottom: 2px solid var(--accent);
+    background: var(--card);
+    box-shadow: 4px 4px 0 var(--brass);
 }
 
 .form-row a {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
 }
 
 /* Gabimi i validimit pranë fushës */
 .error {
-    margin: 0.35rem 0 0;
-    color: var(--accent);
-    font-size: 0.85rem;
+    margin: 0.4rem 0 0;
+    color: var(--wine);
+    font-family: var(--font-fancy);
+    font-size: 0.95rem;
     font-style: italic;
+}
+
+.error::before {
+    content: "✕ ";
+    font-style: normal;
 }
 
 /* ---------- Faqet e gabimit (403, 404) ---------- */
 .error-code {
     margin: 0;
+    color: var(--terracotta);
     font-family: var(--font-title);
-    font-size: 8rem;
-    line-height: 1;
-    color: var(--accent);
+    font-size: 12rem;
+    line-height: 0.9;
+    text-shadow: 8px 8px 0 var(--forest);
 }
 
 /* ---------- Ekranet e vogla: shiriti bëhet shirit lart ---------- */
@@ -387,42 +526,62 @@ form .form-row {
         flex-direction: row;
         flex-wrap: wrap;
         align-items: center;
-        gap: 1rem 2rem;
-        padding: 1.2rem 1.25rem;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
         border-right: none;
-        border-bottom: 1px solid var(--ink);
+        border-bottom: 6px double var(--brass);
+    }
+
+    .brand {
+        padding: 0.4rem 0.8rem;
+    }
+
+    .brand-mark,
+    .brand-sub,
+    .today,
+    .est {
+        display: none;
     }
 
     .brand-name {
+        margin: 0;
         font-size: 2rem;
-    }
-
-    .today {
-        display: none;
     }
 
     nav {
         flex-direction: row;
-        gap: 1.2rem;
+        gap: 0.5rem;
         margin-top: 0;
     }
 
     nav a {
-        border-bottom: none;
+        padding: 0.3rem 0.6rem;
+        font-size: 1.1rem;
+    }
+
+    .nav-num {
+        display: none;
     }
 
     .logout {
-        margin: 0 0 0 auto;
+        margin: 0;
+        width: 100%;
     }
 
     .container {
         padding: 2rem 1.25rem;
     }
 
+    main > form {
+        padding: 1.5rem 1.2rem 0.6rem;
+        box-shadow: 6px 6px 0 var(--terracotta);
+    }
+
     /* Tabelat e gjera rrëshqasin brenda vetes, jo gjithë faqja */
     .table {
         display: block;
         overflow-x: auto;
+        box-shadow: 5px 5px 0 var(--brass);
     }
 
     .site-footer {
@@ -431,6 +590,10 @@ form .form-row {
     }
 
     h1 {
-        font-size: 2.4rem;
+        font-size: 2.8rem;
+    }
+
+    .error-code {
+        font-size: 7rem;
     }
 }

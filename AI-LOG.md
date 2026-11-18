@@ -70,6 +70,34 @@
 - **Çka bëmë:** e aprovuam PR-in me komente nga llogaria ime dhe pas merge-it të `main`-it shtuam një koment të shkurtër. Sugjerimet i lamë jo bllokuese; `trim()` mbetet për Dionin.
 - **Si e verifikuam:** me curl dhe psql: lista, faqja e dhomës me rezervimet sipas `checkIn`, 404, validimi në shqip, numri i dyfishtë te krijimi dhe ndryshimi, fshirja e bllokuar e dhomës me rezervime, 405 për GET te `/delete`, `id=2` te krijimi nuk e mbishkruan dhomën 2. Te kodi i bashkuar: dhoma 501 → rezervim → fshirja bllokohet → pas fshirjes së rezervimit dhoma fshihet. Të dhënat e provës i fshimë; databaza mbeti me 6 dhoma dhe 4 rezervime.
 
+### 2026-11-17, Ngjyrat e dizajnit, Muzlind
+
+- **Pyetja:** dizajni ishte shumë i thjeshtë; shto disa ngjyra dhe bëje më interesant.
+- **Përgjigjja:** Claude shtoi një paletë të vogël: jeshil i errët (shiriti majtas, butonat, koka e tabelës), bronz (linku aktiv, vija nën titull, numrat e dhomave si etiketa çelësash, 404/403), e kuqe vere (fshirja, gabimet) dhe versionet e lehta të tyre për mesazhet flash. Shtoi emrin e seksionit mbi titull ("02 — Dhomat") te layout-i dhe shenjën ✦ te emri i hotelit. Forma e faqes (`main > form`) u bë kartelë e bardhë me vijë bronzi lart.
+- **Çka bëmë:** e pranuam. Ngjyrat janë të gjitha te `:root` si variabla, me koment për secilën. Klasat e faqeve të të tjerëve mbetën të njëjta.
+- **Si e verifikuam:** ./mvnw spring-boot:run: /app/rooms, /app/rooms/1, /app/reservations, forma bosh me gabimet, flash-i i kuq pas fshirjes së dhomës 101 (ka rezervime, s'u fshi) dhe /nuk-ekziston në 1366 px dhe 375 px; në celular faqja nuk rrëshqet anash.
+
+### 2026-11-17, Dizajni maksimalist (art deco), Muzlind
+
+- **Pyetja:** dizajni me ngjyra ende s'na pëlqente; bëje pak më maksimalist.
+- **Përgjigjja:** Claude e ktheu në stil art deco të një hoteli të madh: sfondi me pika (`radial-gradient`), shiriti jeshil me vija diagonale (`repeating-linear-gradient`) dhe kornizë të dyfishtë bronzi, emri "Hotel" në kornizë me ✦ ✦ ✦, titujt shumë të mëdhenj me hije (`text-shadow`) dhe vijë të dyfishtë, butonat dhe kutitë me hije të forta (`box-shadow`) që lëvizin kur kalon me mi, rreshtat e tabelës me radhë (`nth-child(even)`), numrat e dhomave si varëse çelësash, shirit portokalli për emrin e seksionit, mesazhet me ✓/✕, 404/403 me numër gjigant. U shtua një ngjyrë (portokalli i tokës) dhe një font dekorativ (Playfair Display italic).
+- **Çka bëmë:** e pranuam. Ndryshuan vetëm app.css, layout.html (fonti) dhe fragments.html ("— Recepsioni —", "Est. MMXXVI"); klasat e faqeve të të tjerëve mbetën të njëjta.
+- **Si e verifikuam:** ./mvnw spring-boot:run: /app/rooms, /app/rooms/1, forma bosh me gabimet, flash-i i kuq pas fshirjes së dhomës 101 (s'u fshi), /nuk-ekziston, në desktop dhe në 375 px pa rrëshqitje anash.
+
+### 2026-11-17, Vërejtjet e Dionit te PR #10, Muzlind
+
+- **Pyetja:** rregullo dy vërejtjet jo bllokuese të Dionit te PR #10.
+- **Përgjigjja:** Claude i ktheu dy komentet HTML të `layout.html` (fontet dhe emri i seksionit) në komente Thymeleaf `<!--/* */-->`, që të mos i dërgohen shfletuesit. Te CLAUDE.md e rishkroi rreshtin e fragmenteve: hoqi shembullin `header('rooms')` dhe shkroi që `header`, `flash` dhe `footer` i thërret vetëm `layout.html`.
+- **Çka bëmë:** e pranuam të dyja; s'ndryshoi asgjë në pamje.
+- **Si e verifikuam:** ./mvnw spring-boot:run (porti 8081): /app/rooms, /app/reservations dhe /nuk-ekziston (me `Accept: text/html`) kthejnë faqen tonë dhe HTML-ja nuk ka asnjë `<!--`.
+
+### 2026-11-17, Login dhe logout me përdorues in-memory, Dion
+
+- **Pyetja:** sipas PLAN.md pika 4b (pikat 1–5): spring-boot-starter-security, SecurityConfig me BCrypt dhe dy përdorues in-memory (user, admin), rregullat e qasjes për /login, /css/**, /error/**, /admin/** dhe /app/**, formLogin me faqen tonë, logout me POST, AuthController, login.html me mesazhet ?error dhe ?logout, kontrolli i CSRF te format.
+- **Përgjigjja:** Claude shtoi starter-in te pom.xml, `app.user.password` dhe `app.admin.password` te application-dev.properties (me vlerë default nga env, si te PR #8), SecurityConfig me @Value për fjalëkalimet, PasswordEncoder BCrypt, InMemoryUserDetailsManager dhe SecurityFilterChain (`defaultSuccessUrl("/app/reservations", true)`, `logoutSuccessUrl("/login?logout")`), AuthController që kthen "login" dhe login.html me layout-in (layout-i e fsheh menynë dhe "Dil" kur template-i quhet "login").
+- **Çka bëmë:** i pranuam. Pika 6 (thymeleaf-extras-springsecurity6 dhe sec:authorize për butonat e ADMIN-it) pret vendimin e grupit, prandaj s'është këtu: deri atëherë USER-i i sheh butonat e ADMIN-it dhe kur i klikon merr faqen 403 të Muzlindit. application-dev.properties është file i Uvejsit: e shënuam në PR.
+- **Si e verifikuam:** ./mvnw compile pa gabime. Docker nuk punonte, prandaj e nisëm me H2 (file) dhe me layout-in e Muzlindit në classpath (jashtë Git-it), dhe e provuam me curl: pa login çdo faqe (edhe /nuk-ekziston) të çon te /login, /css/app.css është i lirë; /login ka token-in _csrf dhe s'ka meny; fjalëkalimi i gabuar → "Username ose fjalëkalimi i gabuar"; user → /app/** 200, /admin/** 403, fshirja e dhomës dhe e rezervimit 403, POST pa _csrf 403; rezervimi i ri nga user ka created_by = 'user' në databazë; admin → /admin/** 200, fshirja e dhomës me rezervime tregon flash-in; i kyçur, /nuk-ekziston tregon 404-ën tonë; POST /logout → /login?logout me "U çkyçe me sukses", pastaj /app/rooms të çon te login-i. Pasi layout-i dhe 403.html hynë në main, bëmë `git pull origin main` (konflikti te AI-LOG.md u zgjidh duke i mbajtur të gjitha hyrjet) dhe i përsëritëm të gjitha provat: user te /admin/** dhe POST te fshirja sheh "Nuk keni qasje në këtë faqe" (jo Whitelabel); faqja e login-it me dizajnin e ri në shfletues, pa meny dhe pa "Dil". Mbetet: provë me PostgreSQL në Docker.
+
 ### 2026-11-17, Hapësirat te numri i dhomës, Dion
 
 - **Pyetja:** Xhemaledini te rishikimi i PR #5 vuri re që " 101 " (me hapësira) ruhej si dhomë e re, sepse existsByNumber e krahason numrin me hapësirat; rregulloje te RoomController.
