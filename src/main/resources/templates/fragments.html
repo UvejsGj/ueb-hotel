@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="sq">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="sq">
 <body>
 
 <!-- Header-i (shiriti majtas): emri i hotelit, data e sotme, menyja, butoni i temës dhe "Dil".
@@ -13,6 +14,8 @@
 
     <p class="today" th:text="'Sot · ' + ${#temporals.format(#temporals.createToday(), 'dd.MM.yyyy')}">Sot · 17.11.2026</p>
 
+    <p class="today" sec:authorize="isAuthenticated()">Përshëndetje, <b sec:authentication="name">uvejs</b></p>
+
     <nav th:unless="${active == 'login'}">
         <a th:href="@{/app/reservations}" th:classappend="${active == 'reservations'} ? 'active'">
             <span class="nav-num">01</span> Rezervimet
@@ -22,15 +25,19 @@
         </a>
     </nav>
 
-    <!-- Ndërron temën (e errët / e çelët). Kodi JavaScript është te layout.html.
-         Shfaqet vetëm njëri tekst; cilin e vendos app.css sipas temës. -->
+    <!--/* Ndërron temën (e errët / e çelët). Kodi JavaScript është te layout.html.
+           Shfaqet vetëm njëri tekst; cilin e vendos app.css sipas temës. */-->
     <button type="button" id="theme-toggle" class="theme-toggle">
         <span class="to-light">☀ Tema e çelët</span>
         <span class="to-dark">☾ Tema e errët</span>
     </button>
 
-    <form th:unless="${active == 'login'}" class="logout" method="post" th:action="@{/logout}">
+    <!--/* I kyçur: "Dil" (POST, me CSRF). Pa login: "Hyr" të çon te /login. */-->
+    <form th:unless="${active == 'login'}" sec:authorize="isAuthenticated()" class="logout" method="post" th:action="@{/logout}">
         <button type="submit" class="logout-btn">Dil →</button>
+    </form>
+    <form th:unless="${active == 'login'}" sec:authorize="isAnonymous()" class="logout" method="get" th:action="@{/login}">
+        <button type="submit" class="logout-btn">Hyr →</button>
     </form>
 
     <p class="est">Est. MMXXVI</p>
