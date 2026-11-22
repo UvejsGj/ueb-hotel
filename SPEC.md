@@ -16,11 +16,11 @@ Aplikacioni është vetëm për stafin e hotelit, jo për mysafirët.
 | USER (recepsionisti) | sheh listën e dhomave dhe faqen e secilës dhomë; sheh, shton dhe ndryshon rezervime |
 | ADMIN (menaxheri) | gjithçka që bën USER, plus: fshin çdo rezervim, shton/ndryshon/fshin dhoma |
 
-Pa llogari: vetëm faqja e login-it.
+Pa llogari (vetëm lexim): lista e rezervimeve, lista e dhomave dhe faqja e dhomës, pa e-mail-in e mysafirit. Krijimi, ndryshimi dhe fshirja kërkojnë login: "Rezervim i ri" ose "Ndrysho" të çojnë te `/login`, dhe pas login-it të kthejnë te forma. Header-i tregon "Hyr" pa login, dhe "Përshëndetje, emri" me "Dil" pas login-it.
 
 USER-i nuk i sheh butonat e ADMIN-it ("Fshij" te rezervimet; "Dhomë e re", "Ndrysho" dhe "Fshij" te dhomat); "Ndrysho" te rezervimet i mbetet. Nëse e hap adresën `/admin/...` me dorë, sheh faqen 403.
 
-Faza 1: përdoruesit janë in-memory: `user` (ROLE_USER) dhe `admin` (ROLE_ADMIN).
+Faza 1: përdoruesit janë in-memory: `user` (ROLE_USER), `admin` (ROLE_ADMIN), dhe një për secilin anëtar të grupit, me ROLE_ADMIN: `uvejs`, `muzlind`, `xhemaledin`, `dion`. Fjalëkalimet lexohen nga `application-dev.properties` (vlera për zhvillim, p.sh. `uvejs123`).
 
 Faza 2: përdoruesit ruhen në databazë (entiteti `AppUser`), fjalëkalimet me BCrypt. `/admin/**` vetëm ADMIN, `/app/**` USER dhe ADMIN; kush s'ka qasje e sheh faqen `/access-denied`.
 
@@ -80,13 +80,13 @@ Fshirja e një dhome që ka rezervime nuk lejohet: lista tregon mesazhin "Dhoma 
 |---|---|---|---|
 | `/login` | GET, POST | login.html | të gjithë |
 | `/logout` | POST | kthen te `/login?logout` | USER, ADMIN |
-| `/` | GET | redirect te `/app/reservations` | USER, ADMIN |
-| `/app/reservations` | GET | reservations/list.html | USER, ADMIN |
+| `/` | GET | redirect te `/app/reservations` | të gjithë |
+| `/app/reservations` | GET | reservations/list.html | të gjithë (e-mail-i vetëm i kyçur) |
 | `/app/reservations/new` | GET, POST | reservations/form.html | USER, ADMIN |
 | `/app/reservations/{id}/edit` | GET, POST | reservations/form.html | USER, ADMIN |
 | `/admin/reservations/{id}/delete` | POST | fshin, kthen te lista | ADMIN |
-| `/app/rooms` | GET | rooms/list.html | USER, ADMIN |
-| `/app/rooms/{id}` | GET | rooms/detail.html (dhoma + rezervimet) | USER, ADMIN |
+| `/app/rooms` | GET | rooms/list.html | të gjithë |
+| `/app/rooms/{id}` | GET | rooms/detail.html (dhoma + rezervimet) | të gjithë (e-mail-i vetëm i kyçur) |
 | `/admin/rooms/new` | GET, POST | rooms/form.html | ADMIN |
 | `/admin/rooms/{id}/edit` | GET, POST | rooms/form.html | ADMIN |
 | `/admin/rooms/{id}/delete` | POST | fshin nëse s'ka rezervime, kthen te lista | ADMIN |

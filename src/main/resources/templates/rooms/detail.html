@@ -41,7 +41,7 @@
         <thead>
         <tr>
             <th>Mysafiri</th>
-            <th>E-mail</th>
+            <th sec:authorize="isAuthenticated()">E-mail</th>
             <th>Hyrja</th>
             <th>Dalja</th>
             <th>Mysafirë</th>
@@ -50,7 +50,7 @@
         <tbody>
         <tr th:each="res : ${room.reservations}">
             <td th:text="${res.guestName}">Arben Hoxha</td>
-            <td th:text="${res.guestEmail}">arben@example.com</td>
+            <td sec:authorize="isAuthenticated()" th:text="${res.guestEmail}">arben@example.com</td>
             <td th:text="${#temporals.format(res.checkIn, 'dd.MM.yyyy')}">03.12.2026</td>
             <td th:text="${#temporals.format(res.checkOut, 'dd.MM.yyyy')}">06.12.2026</td>
             <td th:text="${res.guests}">1</td>
