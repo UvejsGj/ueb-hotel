@@ -1,48 +1,51 @@
-/* app.css: stili i përbashkët i ueb-hotel (pa framework). Pronari: Muzlind
-   Dy tema me të njëjtin layout (menyja në shiritin majtas):
-   - "Nata" (e errët) është default-i;
-   - "Bregdeti" (e çelët) aktivizohet me butonin ☀ / ☾ te menyja.
-   Butoni vendos atributin data-theme="light" te <html>; këtu ai atribut i ndërron vetëm variablat e ngjyrave. */
+/* app.css: the shared styles of ueb-hotel (no framework). Owner: Muzlind
+   Two themes with the same layout (menu in the side bar on the left):
+   - "Nata" (dark) is the default;
+   - "Bregdeti" (light) is turned on with the ☀ / ☾ button in the menu.
+   The button puts data-theme="light" on <html>; here that attribute only changes the color variables. */
 
-/* ---------- Ngjyrat: tema e errët (default) ---------- */
+/* ---------- Colors: dark theme (default) ---------- */
+/* Variables (--name) are defined once here and used everywhere with var(--name) */
 :root {
-    color-scheme: dark;              /* fushat e datës, select-i dhe scrollbar-at dalin të errëta */
+    color-scheme: dark;              /* date fields, select and scrollbars look dark too */
 
-    --bg: #101418;                   /* sfondi i faqes */
-    --panel: #171d23;                /* shiriti majtas, tabela, forma */
-    --panel-2: #1e262e;              /* data e sotme, rreshti nën mi */
-    --line: #2a333d;                 /* kornizat */
-    --line-soft: #222a32;            /* vijat mes rreshtave */
-    --text: #e7ecef;                 /* teksti kryesor */
-    --text-2: #c3ccd4;               /* etiketat e formës */
-    --muted: #9aa6b2;                /* teksti dytësor */
+    --bg: #101418;                   /* page background */
+    --panel: #171d23;                /* side bar, tables, forms */
+    --panel-2: #1e262e;              /* today's date box, row under the mouse */
+    --line: #2a333d;                 /* borders */
+    --line-soft: #222a32;            /* lines between table rows */
+    --text: #e7ecef;                 /* main text */
+    --text-2: #c3ccd4;               /* form labels */
+    --muted: #9aa6b2;                /* secondary text */
 
-    --accent: #f2b35b;               /* qelibar: butonat kryesorë */
-    --accent-ink: #1a1206;           /* teksti mbi butonin kryesor */
-    --accent-text: #f2b35b;          /* linqet, emri i seksionit, linku aktiv */
-    --accent-soft: rgba(242, 179, 91, 0.12);
-    --tag-bg: transparent;           /* numri i dhomës në tabelë */
-    --tag-line: rgba(242, 179, 91, 0.45);
+    --accent: #f2b35b;               /* amber: main buttons */
+    --accent-ink: #1a1206;           /* text on the main button */
+    --accent-text: #f2b35b;          /* links, section name, active link */
+    --accent-soft: rgba(242, 179, 91, 0.12);   /* light background of the active link */
+    --tag-bg: transparent;           /* room number tag in tables */
+    --tag-line: rgba(242, 179, 91, 0.45);      /* border of the room number tag */
 
-    --danger: #ff8a80;               /* teksti i gabimeve dhe butoni "Fshij" */
-    --danger-bg: #3a1d1e;            /* sfondi i mesazhit të gabimit */
-    --danger-line: #5c2b2c;
-    --danger-strong: #ff7b72;        /* rrethi me ✕ */
-    --ok: #8fe0bb;                   /* mesazhi i suksesit */
-    --ok-bg: #16332a;
-    --ok-line: #24533f;
-    --ok-strong: #6fd3a5;            /* rrethi me ✓ dhe pika te data e sotme */
-    --input-bg: #101418;             /* sfondi i fushave të formës */
+    --danger: #ff8a80;               /* error text and the "Fshij" button */
+    --danger-bg: #3a1d1e;            /* background of the error message */
+    --danger-line: #5c2b2c;          /* border of the error message */
+    --danger-strong: #ff7b72;        /* circle with ✕ */
+    --ok: #8fe0bb;                   /* success message text */
+    --ok-bg: #16332a;                /* success message background */
+    --ok-line: #24533f;              /* success message border */
+    --ok-strong: #6fd3a5;            /* circle with ✓ and the dot before today's date */
+    --input-bg: #101418;             /* background of form fields */
 
+    /* Fonts: if the Google font does not load, the next one in the list is used */
     --font-title: "Bricolage Grotesque", "Segoe UI", Arial, sans-serif;
     --font-text: "Manrope", "Segoe UI", Arial, sans-serif;
 }
 
-/* ---------- Ngjyrat: tema e çelët (kur <html data-theme="light">) ---------- */
+/* ---------- Colors: light theme (when <html data-theme="light">) ---------- */
+/* Same variable names, new values: the rest of the CSS stays the same */
 [data-theme="light"] {
     color-scheme: light;
 
-    --bg: #eef4f6;                   /* mjegull deti */
+    --bg: #eef4f6;                   /* sea mist */
     --panel: #ffffff;
     --panel-2: #e3f1f3;
     --line: #d3e0e5;
@@ -51,11 +54,11 @@
     --text-2: #2c434c;
     --muted: #566b74;
 
-    --accent: #0e3b4a;               /* blu deti i thellë: butonat kryesorë */
+    --accent: #0e3b4a;               /* deep sea blue: main buttons */
     --accent-ink: #ffffff;
     --accent-text: #1a6e7e;
     --accent-soft: #e3f1f3;
-    --tag-bg: #f5e6c8;               /* ngjyrë rëre */
+    --tag-bg: #f5e6c8;               /* sand color */
     --tag-line: #ead5a8;
 
     --danger: #a3381a;
@@ -69,12 +72,13 @@
     --input-bg: #fbfdfd;
 }
 
-/* ---------- Bazat ---------- */
+/* ---------- Basics ---------- */
+/* Width and height include padding and border (easier sizes) */
 * {
     box-sizing: border-box;
 }
 
-/* Dy kolona: shiriti majtas (header) dhe përmbajtja djathtas; footer-i nën përmbajtje */
+/* Two columns: side bar (header) on the left, content on the right; footer under the content */
 body {
     margin: 0;
     min-height: 100vh;
@@ -88,6 +92,7 @@ body {
     line-height: 1.55;
 }
 
+/* Page title */
 h1 {
     margin: 0 0 1.6rem;
     font-family: var(--font-title);
@@ -97,6 +102,7 @@ h1 {
     letter-spacing: -0.02em;
 }
 
+/* Smaller title, e.g. "Rezervimet e dhomës" on the room page */
 h2 {
     margin: 2.8rem 0 1rem;
     font-family: var(--font-title);
@@ -104,6 +110,7 @@ h2 {
     font-weight: 700;
 }
 
+/* Links */
 a {
     color: var(--accent-text);
     text-underline-offset: 3px;
@@ -113,21 +120,21 @@ a:hover {
     color: var(--text);
 }
 
-/* ---------- Shiriti majtas (header) ---------- */
+/* ---------- Side bar (header) ---------- */
 .site-header {
-    grid-row: 1 / 3;              /* zë të dy rreshtat e kolonës së parë */
-    position: sticky;             /* qëndron në vend kur bën scroll */
+    grid-row: 1 / 3;              /* takes both rows of the first column */
+    position: sticky;             /* stays in place when you scroll */
     top: 0;
     height: 100vh;
     display: flex;
-    flex-direction: column;
+    flex-direction: column;       /* items one under the other */
     gap: 1.6rem;
     padding: 1.8rem 1.25rem 1.4rem;
     background: var(--panel);
     border-right: 1px solid var(--line);
 }
 
-/* Emri i hotelit: katrori me "H" dhe dy rreshtat e tekstit */
+/* Hotel name: the "H" square on the left, two lines of text on the right */
 .brand {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -141,12 +148,13 @@ a:hover {
     color: var(--text);
 }
 
+/* The "H" square */
 .brand-mark {
     grid-row: 1 / 3;
     width: 2.6rem;
     height: 2.6rem;
     display: grid;
-    place-items: center;
+    place-items: center;          /* "H" in the middle */
     border-radius: 0.75rem;
     background: var(--accent);
     color: var(--accent-ink);
@@ -155,6 +163,7 @@ a:hover {
     font-weight: 700;
 }
 
+/* "Hotel" */
 .brand-name {
     font-family: var(--font-title);
     font-size: 1.3rem;
@@ -162,12 +171,13 @@ a:hover {
     line-height: 1.1;
 }
 
+/* "Recepsioni" */
 .brand-sub {
     color: var(--muted);
     font-size: 0.78rem;
 }
 
-/* Data e sotme me një pikë jeshile para */
+/* Today's date (and the greeting) in a small box */
 .today {
     display: flex;
     align-items: center;
@@ -181,6 +191,7 @@ a:hover {
     font-variant-numeric: tabular-nums;
 }
 
+/* Small green dot before the text */
 .today::before {
     content: "";
     width: 0.5rem;
@@ -189,12 +200,14 @@ a:hover {
     background: var(--ok-strong);
 }
 
+/* Menu: links one under the other */
 nav {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
 
+/* One menu link */
 nav a {
     display: flex;
     align-items: center;
@@ -211,20 +224,21 @@ nav a:hover {
     color: var(--text);
 }
 
-/* Linku i faqes ku je */
+/* The link of the page you are on */
 nav a.active {
     background: var(--accent-soft);
     color: var(--accent-text);
     font-weight: 700;
 }
 
+/* The small number before the link ("01", "02") */
 .nav-num {
     font-size: 0.75rem;
     opacity: 0.75;
     font-variant-numeric: tabular-nums;
 }
 
-/* Butoni i temës, "Dil" dhe "Est." shkojnë në fund të shiritit */
+/* Theme button and "Dil"/"Hyr" button look the same */
 .theme-toggle,
 .logout-btn {
     width: 100%;
@@ -241,6 +255,7 @@ nav a.active {
     cursor: pointer;
 }
 
+/* margin-top: auto pushes the theme button (and everything after it) to the bottom of the side bar */
 .theme-toggle {
     margin-top: auto;
 }
@@ -251,7 +266,7 @@ nav a.active {
     color: var(--text);
 }
 
-/* Teksti i butonit të temës: në temën e errët "☀ Tema e çelët", në të çelët "☾ Tema e errët" */
+/* Theme button text: dark theme shows "☀ Tema e çelët", light theme shows "☾ Tema e errët" */
 .to-dark {
     display: none;
 }
@@ -264,25 +279,28 @@ nav a.active {
     display: inline;
 }
 
+/* "Dil"/"Hyr" form: close to the theme button */
 .logout {
-    margin: -0.9rem 0 0;          /* afër butonit të temës */
+    margin: -0.9rem 0 0;
 }
 
+/* "Est. MMXXVI" at the very bottom */
 .est {
     margin: -0.6rem 0 0;
     color: var(--muted);
     font-size: 0.75rem;
 }
 
-/* ---------- Përmbajtja dhe footer-i ---------- */
+/* ---------- Content and footer ---------- */
+/* The main area on the right */
 .container {
     width: 100%;
-    min-width: 0;                 /* pa këtë, një tabelë e gjerë e zgjeron gjithë kolonën */
+    min-width: 0;                 /* without this, a wide table would make the whole column wider */
     max-width: 66rem;
     padding: 2.8rem 3.25rem 2rem;
 }
 
-/* Emri i seksionit mbi titull, p.sh. "02 — Dhomat" */
+/* Section name above the title, e.g. "02 — Dhomat" */
 .kicker {
     margin: 0 0 0.9rem;
     color: var(--accent-text);
@@ -292,6 +310,7 @@ nav a.active {
     text-transform: uppercase;
 }
 
+/* Footer: second column, with a thin line above */
 .site-footer {
     grid-column: 2;
     margin: 0 3.25rem;
@@ -301,7 +320,8 @@ nav a.active {
     font-size: 0.78rem;
 }
 
-/* ---------- Butonat ---------- */
+/* ---------- Buttons ---------- */
+/* Main button (also used on links, e.g. "Rezervim i ri"): rounded "pill" */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -323,17 +343,19 @@ nav a.active {
     opacity: 0.88;
 }
 
-/* Linku pas butonit (p.sh. "Anulo", "Kthehu te dhomat") pak më larg */
+/* A link right after a button (e.g. "Anulo", "Kthehu te dhomat") gets some space */
 .btn + a {
     margin-left: 1.2rem;
 }
 
+/* Red button for deleting */
 .btn-danger {
     background: var(--danger-strong);
     color: var(--danger-bg);
 }
 
-/* ---------- Mesazhet (flash): shenja ✓ / ✕ në një rreth ---------- */
+/* ---------- Messages (flash): ✓ / ✕ inside a circle ---------- */
+/* Shared look of the green and the red message */
 .flash-success,
 .flash-error {
     display: flex;
@@ -348,6 +370,7 @@ nav a.active {
     font-weight: 600;
 }
 
+/* ::before adds the circle with ✓ before the text */
 .flash-success::before,
 .flash-error::before {
     content: "✓";
@@ -363,31 +386,34 @@ nav a.active {
     font-weight: 800;
 }
 
+/* Error message: red colors instead of green */
 .flash-error {
     border-color: var(--danger-line);
     background: var(--danger-bg);
     color: var(--danger);
 }
 
+/* Error message: ✕ instead of ✓ */
 .flash-error::before {
     content: "✕";
     background: var(--danger-strong);
     color: var(--danger-bg);
 }
 
-/* ---------- Tabelat: kartelë me kënde të rrumbullakëta ---------- */
+/* ---------- Tables: a card with rounded corners ---------- */
 .table {
     width: 100%;
     margin-bottom: 1.6rem;
-    border-collapse: separate;    /* "separate" lejon border-radius te tabela */
+    border-collapse: separate;    /* "separate" allows border-radius on the table */
     border-spacing: 0;
-    overflow: hidden;
+    overflow: hidden;             /* cuts the corners so they stay round */
     border: 1px solid var(--line);
     border-radius: 1rem;
     background: var(--panel);
-    font-variant-numeric: tabular-nums;   /* numrat me gjerësi të njëjtë, rreshtohen bukur */
+    font-variant-numeric: tabular-nums;   /* all digits have the same width, so numbers line up */
 }
 
+/* Every cell: space inside and a thin line below */
 .table th,
 .table td {
     padding: 0.8rem 1.1rem;
@@ -396,11 +422,13 @@ nav a.active {
     border-bottom: 1px solid var(--line-soft);
 }
 
+/* No line under the last row */
 .table tr:last-child th,
 .table tr:last-child td {
     border-bottom: 0;
 }
 
+/* Header cells: small, grey, uppercase */
 .table th {
     color: var(--muted);
     font-size: 0.75rem;
@@ -409,20 +437,22 @@ nav a.active {
     text-transform: uppercase;
 }
 
+/* Stronger line under the table header */
 .table thead th {
     border-bottom: 1px solid var(--line);
 }
 
-/* Faqja e dhomës: etiketat majtas */
+/* Room page: labels on the left ("Tipi", "Kati"...) */
 .table tbody th {
     width: 14rem;
 }
 
+/* Row under the mouse gets a lighter background */
 .table tbody tr:hover td {
     background: var(--panel-2);
 }
 
-/* Numri i dhomës si etiketë */
+/* Room number link shown as a small tag */
 .table td a {
     display: inline-block;
     padding: 0.2rem 0.65rem;
@@ -434,14 +464,14 @@ nav a.active {
     text-decoration: none;
 }
 
-/* Kolona e fundit (butonat) në të djathtë */
+/* Last column (the buttons) on the right, on one line */
 .table td:last-child {
     text-align: right;
     white-space: nowrap;
 }
 
-/* Butonat në tabelë: të vegjël dhe vetëm me kornizë.
-   "Ndrysho" është link (a), prandaj këtu e kthejmë nga stili i etiketës në atë të butonit. */
+/* Buttons inside a table: small, only a border.
+   "Ndrysho" is a link (a), so here we turn it back from the tag style into the button style. */
 .table .btn,
 .table a.btn {
     display: inline-flex;
@@ -456,18 +486,20 @@ nav a.active {
     font-weight: 600;
 }
 
+/* "Fshij" inside a table: red text and border */
 .table .btn-danger {
     border-color: var(--danger-line);
     color: var(--danger);
 }
 
-/* Forma e fshirjes qëndron në të njëjtin rresht me "Ndrysho" */
+/* The delete form stays on the same line as "Ndrysho" */
 td form {
     display: inline;
     margin-left: 0.35rem;
 }
 
-/* ---------- Format: kartelë me fushat në dy kolona ---------- */
+/* ---------- Forms: a card with the fields in two columns ---------- */
+/* "main > form" = only the page's form, not the small delete forms in tables */
 main > form {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -479,22 +511,24 @@ main > form {
     background: var(--panel);
 }
 
-/* Faqja e login-it ka vetëm dy fusha: një kolonë dhe më e ngushtë */
+/* Login page has only two fields: one column and narrower */
 main > form:has(input[type="password"]) {
     grid-template-columns: 1fr;
     max-width: 24rem;
 }
 
+/* One row of the form: label + field + error */
 .form-row {
     margin-bottom: 1.4rem;
     min-width: 0;
 }
 
-/* Rreshti i fundit (butonat) zë të dyja kolonat */
+/* The last row (the buttons) takes both columns */
 .form-row:last-child {
     grid-column: 1 / -1;
 }
 
+/* Field name above the field */
 .form-row label {
     display: block;
     margin-bottom: 0.4rem;
@@ -503,6 +537,7 @@ main > form:has(input[type="password"]) {
     font-weight: 600;
 }
 
+/* Text fields, dates, numbers and select boxes */
 .form-row input,
 .form-row select {
     width: 100%;
@@ -516,19 +551,20 @@ main > form:has(input[type="password"]) {
     font-size: 1rem;
 }
 
+/* The field you are typing in gets a colored outline */
 .form-row input:focus,
 .form-row select:focus {
     outline: 2px solid var(--accent-text);
     outline-offset: 1px;
 }
 
-/* Fusha që ka gabim (rreshti ka një <p class="error">) merr kornizë të kuqe */
+/* A field with an error (its row has a <p class="error">) gets a red border */
 .form-row:has(.error) input,
 .form-row:has(.error) select {
     border-color: var(--danger-line);
 }
 
-/* Gabimi i validimit pranë fushës */
+/* Validation error under the field */
 .error {
     margin: 0.4rem 0 0;
     color: var(--danger);
@@ -536,11 +572,13 @@ main > form:has(input[type="password"]) {
     font-weight: 600;
 }
 
+/* ✕ before the error text */
 .error::before {
     content: "✕ ";
 }
 
-/* ---------- Faqet e gabimit (403, 404) ---------- */
+/* ---------- Error pages (403, 404) ---------- */
+/* The big "404" / "403" number */
 .error-code {
     margin: 0;
     color: var(--accent-text);
@@ -551,24 +589,26 @@ main > form:has(input[type="password"]) {
     letter-spacing: -0.04em;
 }
 
-/* ---------- Laptopët e ngushtë: tabela e gjerë (p.sh. rezervimet me e-mail)
-   rrëshqet brenda kutisë së vet, që faqja të mos rrëshqasë anash ---------- */
+/* ---------- Narrow laptops (up to 1280px): a wide table (e.g. reservations with e-mail)
+   scrolls inside its own box, so the page itself does not scroll sideways ---------- */
 @media (max-width: 1280px) {
     .table {
         display: block;
-        width: max-content;       /* kutia sa tabela... */
-        max-width: 100%;          /* ...por jo më e gjerë se faqja */
-        overflow-x: auto;
+        width: max-content;       /* the box is as wide as the table... */
+        max-width: 100%;          /* ...but never wider than the page */
+        overflow-x: auto;         /* scroll bar inside the box if needed */
     }
 }
 
-/* ---------- Ekranet e vogla: shiriti bëhet shirit lart ---------- */
+/* ---------- Small screens (phones, up to 800px): the side bar becomes a bar at the top ---------- */
 @media (max-width: 800px) {
+    /* One column instead of two */
     body {
         grid-template-columns: minmax(0, 1fr);
         grid-template-rows: auto 1fr auto;
     }
 
+    /* Header: a normal bar at the top, items next to each other */
     .site-header {
         grid-row: auto;
         position: static;
@@ -582,6 +622,7 @@ main > form:has(input[type="password"]) {
         border-bottom: 1px solid var(--line);
     }
 
+    /* Hide the less important parts on phones */
     .brand-sub,
     .today,
     .est,
@@ -589,14 +630,16 @@ main > form:has(input[type="password"]) {
         display: none;
     }
 
+    /* Smaller "H" square */
     .brand-mark {
         width: 2.2rem;
         height: 2.2rem;
     }
 
+    /* Menu links next to each other, on their own (second) line */
     nav {
         flex-direction: row;
-        order: 3;                 /* menyja në rreshtin e dytë */
+        order: 3;
         width: 100%;
     }
 
@@ -604,12 +647,14 @@ main > form:has(input[type="password"]) {
         padding: 0.5rem 0.8rem;
     }
 
+    /* Theme and "Dil" buttons only as wide as their text */
     .theme-toggle,
     .logout-btn {
         width: auto;
         margin: 0;
     }
 
+    /* Push the theme button to the right */
     .theme-toggle {
         margin-left: auto;
     }
@@ -618,24 +663,29 @@ main > form:has(input[type="password"]) {
         margin: 0;
     }
 
+    /* Less space around the content */
     .container {
         padding: 1.8rem 1rem;
     }
 
+    /* Footer in the only column */
     .site-footer {
         grid-column: 1;
         margin: 0 1rem;
     }
 
+    /* Smaller page title */
     h1 {
         font-size: 2.3rem;
     }
 
+    /* Form fields in one column */
     main > form {
         grid-template-columns: 1fr;
         padding: 1.4rem 1.1rem 0.4rem;
     }
 
+    /* Smaller "404" / "403" number */
     .error-code {
         font-size: 6rem;
     }

@@ -1,14 +1,22 @@
 <!DOCTYPE html>
+<!--/* error/403.html: shown when a user opens a page they are not allowed to see
+       (e.g. "user" opens /admin/rooms/new, which is only for ADMIN).
+       Spring Boot finds this file by itself (folder "error", name = status code).
+       th:replace sends this page's <title> and <main> to layout.html. */-->
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
+    <!--/* Text in the browser tab */-->
     <title>Nuk keni qasje</title>
 </head>
 <body>
+<!--/* The content that layout.html puts on the page */-->
 <main>
+    <!--/* Big "403" number */-->
     <p class="error-code">403</p>
     <h1>Nuk keni qasje në këtë faqe</h1>
     <p>Kjo faqe është vetëm për administratorin.</p>
+    <!--/* Button back to the reservations list */-->
     <p><a class="btn" th:href="@{/app/reservations}">Kthehu te rezervimet</a></p>
 </main>
 </body>

@@ -1,45 +1,62 @@
 <!DOCTYPE html>
+<!--/* layout.html: the shared frame of every page.
+       A page sends us its <title> and <main>, and we put them inside this frame.
+       th:fragment="layout(title, content)" gives this frame a name and two parameters. */-->
 <html xmlns:th="http://www.thymeleaf.org" lang="sq" th:fragment="layout(title, content)">
 <head>
+    <!--/* Basic settings: letters with ë/ç and correct size on phones */-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--/* The page's own <title> replaces this one */-->
     <title th:replace="${title}">Hotel</title>
-    <!--/* Dy fonte nga Google Fonts: Bricolage Grotesque (titujt) dhe Manrope (teksti) */-->
+
+    <!--/* Two fonts from Google Fonts: Bricolage Grotesque (titles) and Manrope (text) */-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Manrope:wght@400;500;600;700;800&display=swap">
+
+    <!--/* Our own styles; @{...} builds the correct link to the file */-->
     <link rel="stylesheet" th:href="@{/css/app.css}">
-    <!--/* Tema: e errëta është default. Nëse përdoruesi ka zgjedhur më herët temën e çelët
-           (ruhet në localStorage të shfletuesit), e vendosim para se të vizatohet faqja,
-           që të mos "ndriçojë" faqja e errët për një çast. */-->
+
+    <!--/* Theme: dark is the default.
+           If the user chose the light theme before (saved in the browser's localStorage),
+           we switch it on here, BEFORE the page is drawn, so the page does not flash dark first. */-->
     <script>
         if (localStorage.getItem('theme') === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
         }
     </script>
 </head>
-<!--/* page = emri i template-it të faqes, p.sh. "rooms/list" ose "reservations/form".
-       Prej tij dimë cili link i menysë është aktiv. (Ky koment nuk i dërgohet shfletuesit.) */-->
+<!--/* th:with creates two variables for this page:
+       page   = the template name, e.g. "rooms/list" or "reservations/form"
+       active = which menu link is active: 'rooms', 'reservations', 'login' or '' (none) */-->
 <body th:with="page=${#execInfo.processedTemplateName},
                active=${page == 'login'} ? 'login'
                     : (${#strings.startsWith(page, 'rooms/')} ? 'rooms'
                     : (${#strings.startsWith(page, 'reservations/')} ? 'reservations' : ''))">
 
+<!--/* The header (side bar with the menu) from fragments.html; we tell it which link is active */-->
 <header th:replace="~{fragments :: header(${active})}"></header>
 
+<!--/* The main area on the right */-->
 <div class="container">
-    <!--/* Emri i seksionit mbi titullin e faqes, p.sh. "02 — Dhomat" */-->
+    <!--/* Small section name above the page title, e.g. "02 — Dhomat" */-->
     <p class="kicker" th:if="${active == 'reservations'}">01 — Rezervimet</p>
     <p class="kicker" th:if="${active == 'rooms'}">02 — Dhomat</p>
 
+    <!--/* Success / error messages after an action (from fragments.html) */-->
     <div th:replace="~{fragments :: flash}"></div>
 
+    <!--/* The page's own <main> goes here */-->
     <main th:replace="${content}"></main>
 </div>
 
+<!--/* The footer from fragments.html */-->
 <footer th:replace="~{fragments :: footer}"></footer>
 
-<!--/* Butoni i temës: klikimi e ndërron data-theme te <html> dhe e ruan zgjedhjen. */-->
+<!--/* Theme button: a click switches data-theme on <html> between dark and light,
+       and saves the choice in localStorage so it stays after a refresh. */-->
 <script>
     document.getElementById('theme-toggle').addEventListener('click', function () {
         const html = document.documentElement;

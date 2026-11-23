@@ -1,21 +1,28 @@
 <!DOCTYPE html>
+<!--/* fragments.html: small reusable pieces that layout.html puts into every page:
+       header (side bar with the menu), flash (messages) and footer.
+       xmlns:sec lets us use sec:authorize (show something only to logged-in users, etc.). */-->
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="sq">
 <body>
 
-<!-- Header-i (shiriti majtas): emri i hotelit, data e sotme, menyja, butoni i temës dhe "Dil".
-     active = 'reservations', 'rooms', 'login' ose '' -->
+<!--/* HEADER: the side bar. "active" tells which menu link to highlight:
+       'reservations', 'rooms', 'login' (hides the menu) or '' (nothing highlighted, e.g. 404). */-->
 <header th:fragment="header(active)" class="site-header">
+    <!--/* Hotel name; a click goes to the reservations list */-->
     <a class="brand" th:href="@{/app/reservations}">
         <span class="brand-mark" aria-hidden="true">H</span>
         <span class="brand-name">Hotel</span>
         <span class="brand-sub">Recepsioni</span>
     </a>
 
+    <!--/* Today's date, formatted as dd.MM.yyyy */-->
     <p class="today" th:text="'Sot · ' + ${#temporals.format(#temporals.createToday(), 'dd.MM.yyyy')}">Sot · 17.11.2026</p>
 
+    <!--/* Greeting with the username; shown only when the user is logged in */-->
     <p class="today" sec:authorize="isAuthenticated()">Përshëndetje, <b sec:authentication="name">uvejs</b></p>
 
+    <!--/* Menu; hidden on the login page. th:classappend adds class "active" to the current page's link */-->
     <nav th:unless="${active == 'login'}">
         <a th:href="@{/app/reservations}" th:classappend="${active == 'reservations'} ? 'active'">
             <span class="nav-num">01</span> Rezervimet
@@ -25,31 +32,37 @@
         </a>
     </nav>
 
-    <!--/* Ndërron temën (e errët / e çelët). Kodi JavaScript është te layout.html.
-           Shfaqet vetëm njëri tekst; cilin e vendos app.css sipas temës. */-->
+    <!--/* Theme button (dark / light). Its JavaScript is in layout.html.
+           Only one of the two texts is visible; app.css decides which one. */-->
     <button type="button" id="theme-toggle" class="theme-toggle">
         <span class="to-light">☀ Tema e çelët</span>
         <span class="to-dark">☾ Tema e errët</span>
     </button>
 
-    <!--/* I kyçur: "Dil" (POST, me CSRF). Pa login: "Hyr" të çon te /login. */-->
+    <!--/* Logged in: "Dil" (log out). It is a POST form; th:action adds the CSRF token automatically. */-->
     <form th:unless="${active == 'login'}" sec:authorize="isAuthenticated()" class="logout" method="post" th:action="@{/logout}">
         <button type="submit" class="logout-btn">Dil →</button>
     </form>
+    <!--/* Not logged in: "Hyr" (log in) takes you to /login */-->
     <form th:unless="${active == 'login'}" sec:authorize="isAnonymous()" class="logout" method="get" th:action="@{/login}">
         <button type="submit" class="logout-btn">Hyr →</button>
     </form>
 
+    <!--/* Small decorative line at the bottom of the side bar */-->
     <p class="est">Est. MMXXVI</p>
 </header>
 
-<!-- Mesazhet pas veprimit (addFlashAttribute "message" / "error").
-     Nuk shfaqet në faqet e gabimit: aty Spring e vendos vetë "status" dhe "error" (p.sh. "Not Found"). -->
+<!--/* FLASH: messages after an action (controller uses addFlashAttribute "message" or "error").
+       Hidden on error pages (404/403): there Spring sets "status" and "error" itself,
+       and we don't want "Not Found" to show up as a red message. */-->
 <div th:fragment="flash" th:unless="${status}">
+    <!--/* Green message, only if "message" exists */-->
     <p class="flash-success" th:if="${message}" th:text="${message}">Mesazhi i suksesit</p>
+    <!--/* Red message, only if "error" exists */-->
     <p class="flash-error" th:if="${error}" th:text="${error}">Mesazhi i gabimit</p>
 </div>
 
+<!--/* FOOTER: the line at the bottom of every page */-->
 <footer th:fragment="footer" class="site-footer">© 2026 ueb-hotel · Cacttus Education</footer>
 
 </body>
