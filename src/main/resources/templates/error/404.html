@@ -1,14 +1,21 @@
 <!DOCTYPE html>
+<!--/* error/404.html: shown when an address does not exist.
+       Spring Boot finds this file by itself (folder "error", name = status code).
+       th:replace sends this page's <title> and <main> to layout.html. */-->
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout :: layout(~{::title}, ~{::main})}">
 <head>
+    <!--/* Text in the browser tab */-->
     <title>Faqja nuk u gjet</title>
 </head>
 <body>
+<!--/* The content that layout.html puts on the page */-->
 <main>
+    <!--/* Big "404" number */-->
     <p class="error-code">404</p>
     <h1>Faqja nuk u gjet</h1>
     <p>Adresa që kërkuat nuk ekziston.</p>
+    <!--/* Button back to the reservations list */-->
     <p><a class="btn" th:href="@{/app/reservations}">Kthehu te rezervimet</a></p>
 </main>
 </body>
